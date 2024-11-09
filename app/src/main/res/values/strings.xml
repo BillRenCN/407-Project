@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">project</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_listing">Listings</string>
+    <string name="title_posts">Posts</string>
+    <string name="title_profile">Profile</string>
 </resources>

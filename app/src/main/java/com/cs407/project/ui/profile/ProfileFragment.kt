@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -66,6 +67,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return root
     }
 

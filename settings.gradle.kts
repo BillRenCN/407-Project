@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "project"
 include(":app")
- 
+include(":feedback")

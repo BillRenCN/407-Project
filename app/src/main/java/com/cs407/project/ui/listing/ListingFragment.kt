@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,10 @@ class ListingFragment : Fragment() {
 
         _binding = FragmentListingBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        binding.floatingActionButton.setOnClickListener {
+            Toast.makeText(context, "Should launch add listing activity", Toast.LENGTH_SHORT).show()
+        }
 
 //        val textView: TextView = binding.textListing
 //        listingViewModel.text.observe(viewLifecycleOwner) {

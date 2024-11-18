@@ -1,8 +1,5 @@
 package com.cs407.project.ui.listing
 
-import android.graphics.BitmapFactory
-import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
-import java.io.File
+import com.cs407.project.lib.displayImage
 import java.text.NumberFormat
 import java.util.Currency
 
@@ -32,40 +29,15 @@ class ListingAdapter(
         priceFormat.currency = Currency.getInstance("USD")
         holder.itemPrice.text = priceFormat.format(model.price)
 
-        val filesDir = holder.itemView.context.filesDir
-        val imagesDir = "${filesDir.absolutePath}/images"
-        val imagesDirFile = File(imagesDir)
-        if (!imagesDirFile.exists()) {
-            imagesDirFile.mkdirs()
-        }
-        val imageFile = File("${imagesDir}/${model.itemId}")
-
-        if (imageFile.exists()) {
-            val requiredWidthPx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 100f, holder.itemView.context.resources.displayMetrics
-            ).toInt()
-
-            // Set BitmapFactory options to scale down the image
-            val options = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true  // First decode to get dimensions
-                BitmapFactory.decodeFile(imageFile.absolutePath, this)
-                inSampleSize = calculateInSampleSize(this, requiredWidthPx)
-                inJustDecodeBounds = false // Decode again for the actual bitmap
-            }
-
-            // Decode bitmap with inSampleSize set
-            val scaledBitmap = BitmapFactory.decodeFile(imageFile.absolutePath, options)
-            holder.imageView.scaleType = ImageView.ScaleType.FIT_XY
-            holder.imageView.setImageBitmap(scaledBitmap)
-        } else {
-            holder.imageView.scaleType = ImageView.ScaleType.FIT_CENTER
-            holder.imageView.setImageResource(R.drawable.error_image)
-            Log.e("ListingAdapter", "Image does not exist for item ${model.itemId}")
-        }
+        displayImage(model.itemId, holder.imageView)
 
         holder.itemView.setOnClickListener {
             // launch item details activity here
-            Toast.makeText(holder.itemView.context, "Item #$position (id ${model.itemId}) clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                holder.itemView.context,
+                "Item #$position (id ${model.itemId}) clicked",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -78,16 +50,5 @@ class ListingAdapter(
         val itemDescription: TextView = itemView.findViewById(R.id.itemDescription)
         val itemPrice: TextView = itemView.findViewById(R.id.itemPrice)
         val imageView: ImageView = itemView.findViewById(R.id.imageView)
-    }
-
-    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
-        val width: Int = options.outWidth
-        var inSampleSize = 1
-
-        if (width > reqWidth) {
-            val widthRatio = width / reqWidth
-            inSampleSize = widthRatio
-        }
-        return inSampleSize.coerceAtLeast(1)  // Ensure it's at least 1
     }
 }

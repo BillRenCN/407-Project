@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
 import java.io.File
@@ -60,6 +61,11 @@ class ListingAdapter(
             holder.imageView.scaleType = ImageView.ScaleType.FIT_CENTER
             holder.imageView.setImageResource(R.drawable.error_image)
             Log.e("ListingAdapter", "Image does not exist for item ${model.itemId}")
+        }
+
+        holder.itemView.setOnClickListener {
+            // launch item details activity here
+            Toast.makeText(holder.itemView.context, "Item #$position (id ${model.itemId}) clicked", Toast.LENGTH_SHORT).show()
         }
     }
 

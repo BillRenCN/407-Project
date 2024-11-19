@@ -47,20 +47,52 @@
             android:text="Send Message"
             android:layout_gravity="center"
             android:layout_margin="10dp"/>
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="96% positive feedback (23)"
+            android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-            <TextView
+            android:gravity="center_horizontal">
+            <Button
+                android:id="@+id/listing_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:text="User rating:"
-                android:textSize="15sp" />
-
-
+                android:text="View Listings"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/cardview_dark_background"/>
+            <Button
+                android:id="@+id/review_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reviews"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/cardview_dark_background"/>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#D3D3D3" />
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/listingsFragment"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:name="com.cs407.project.ReviewListFragment"/>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/reviewsFragment"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:name="com.cs407.project.ReviewListFragment"/>
+    </LinearLayout>
 </FrameLayout>

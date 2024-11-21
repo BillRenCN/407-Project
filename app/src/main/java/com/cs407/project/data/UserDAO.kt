@@ -29,4 +29,10 @@ interface UserDao {
     @Query("SELECT EXISTS(SELECT 1 FROM users WHERE email = :email LIMIT 1)")
     suspend fun userExistsByEmail(email: String): Boolean
 
+    @Query("SELECT password FROM users WHERE email = :email LIMIT 1")
+    suspend fun getPasswordByEmail(email: String): String?
+
+    @Query("SELECT password FROM users WHERE username = :username LIMIT 1")
+    suspend fun getPasswordByUsername(username: String): String?
+
 }

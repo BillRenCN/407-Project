@@ -38,7 +38,6 @@ class RegisterFragment : Fragment() {
     private lateinit var passwordEditText2: EditText
     private lateinit var emailEditText: EditText
     private lateinit var loginButton: Button
-    private lateinit var userPasswdKV: SharedPreferences
     private lateinit var userDB: UsersDatabase
 
 
@@ -90,7 +89,7 @@ class RegisterFragment : Fragment() {
             }
         }
     }
-    private suspend fun getUserPasswd(){}
+
 
     private fun hash(input: String): String {
         return MessageDigest.getInstance("SHA-256").digest(input.toByteArray())

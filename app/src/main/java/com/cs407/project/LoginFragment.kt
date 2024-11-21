@@ -6,7 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.cs407.project.data.UsersDatabase
+import kotlinx.coroutines.launch
+import java.security.MessageDigest
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,22 +26,20 @@ private const val ARG_PARAM2 = "param2"
  */
 class LoginFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var usernameEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var loginButton: Button
+    private lateinit var userDB: UsersDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view=inflater.inflate(R.layout.fragment_login, container, false)
+        userDB = UsersDatabase.getDatabase(requireContext())
+        usernameEditText=view.findViewById(R.id.emailEditText)
+        passwordEditText=view.findViewById(R.id.passwordEditText)
+        loginButton=view.findViewById(R.id.userLoginButton)
         val backButton=view.findViewById<ImageButton>(R.id.backArrowButton)
         backButton.setOnClickListener{
             activity?.supportFragmentManager?.beginTransaction()
@@ -45,6 +49,52 @@ class LoginFragment : Fragment() {
                 ?.commit()
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?){
+        loginButton.setOnClickListener{
+            val username = usernameEditText.text.toString()
+            val password = passwordEditText.text.toString()
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(requireContext(), "One or more fields cannot be empty!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            lifecycleScope.launch{
+                //userExist and emailExist cannot both be true
+                val userExist=userDB.userDao().userExistsByUsername(username)
+                val emailExist=userDB.userDao().userExistsByEmail(username)
+                if (!userExist && !emailExist){
+                    Toast.makeText(requireContext(), "User does not exist!", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                if (userExist){
+                    val realPassword=userDB.userDao().getPasswordByUsername(username)
+                    if (hash(password)==realPassword){
+                        Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
+                        //Todo: change wireframe to main home page
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Password incorrect!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                if (emailExist){
+                    val realPassword=userDB.userDao().getPasswordByEmail(username)
+                    if (hash(password)==realPassword){
+                        Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
+                        //Todo: change wireframe to main home page
+                    }
+                    else{
+                        Toast.makeText(requireContext(), "Password incorrect!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun hash(input: String): String {
+        return MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
+            .fold("") { str, it -> str + "%02x".format(it) }
     }
 
     companion object {

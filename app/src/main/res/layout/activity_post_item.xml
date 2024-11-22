@@ -7,7 +7,8 @@ android:padding="16dp">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="64dp"> <!-- Adjust to push all content down -->
 
     <!-- Item Title Section -->
     <EditText
@@ -15,9 +16,10 @@ android:padding="16dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item title"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:inputType="text" />
+        android:layout_marginTop="32dp"
+    android:layout_marginBottom="16dp"
+    android:padding="8dp"
+    android:inputType="text" />
 
     <!-- Item Description Section -->
     <EditText
@@ -25,6 +27,7 @@ android:padding="16dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item description"
+        android:layout_marginTop="16dp"
         android:minHeight="100dp"
         android:layout_marginBottom="16dp"
         android:padding="8dp"

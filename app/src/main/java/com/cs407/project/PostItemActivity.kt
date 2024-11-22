@@ -1,58 +1,50 @@
 package com.cs407.project
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
-import com.cs407.project.databinding.ActivityPostItemBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PostItemActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityPostItemBinding
-    private lateinit var database: AppDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPostItemBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_post_item)
 
-        // Initialize the database
-        database = AppDatabase.getDatabase(this)
+        val titleInput: EditText = findViewById(R.id.item_title)
+        val descriptionInput: EditText = findViewById(R.id.item_description)
+        val priceInput: EditText = findViewById(R.id.item_price)
+        val submitButton: Button = findViewById(R.id.btn_list_item)
 
-        binding.btnListItem.setOnClickListener {
-            if (binding.checkboxAgree.isChecked) {
-                addItemToDatabase()
+        submitButton.setOnClickListener {
+            val title = titleInput.text.toString()
+            val description = descriptionInput.text.toString()
+            val price = priceInput.text.toString().toDoubleOrNull()
+            val userId = 1 // Placeholder: Replace with logic to get current user ID if available
+
+            if (title.isNotEmpty() && description.isNotEmpty() && price != null) {
+                val newItem = Item(
+                    title = title,
+                    description = description,
+                    price = price,
+                    userId = userId
+                )
+
+                val database = AppDatabase.getDatabase(applicationContext)
+                CoroutineScope(Dispatchers.IO).launch {
+                    database.itemDao().insertItem(newItem)
+                }
+                Toast.makeText(this, "Item Posted", Toast.LENGTH_SHORT).show()
+                finish()
             } else {
-                Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun addItemToDatabase() {
-        val title = binding.itemTitle.text.toString()
-        val description = binding.itemDescription.text.toString()
-        val price = binding.itemPrice.text.toString().toDoubleOrNull() ?: 0.0
-        val userId = 1 // Replace with the actual user ID in a real app
-
-        if (title.isNotEmpty() && description.isNotEmpty()) {
-            val newItem = Item(
-                title = title,
-                description = description,
-                price = price,
-                userId = userId
-            )
-
-            // Insert the item into the database
-            lifecycleScope.launch {
-                database.itemDao().insertItem(newItem)
-                Toast.makeText(this@PostItemActivity, "Item posted successfully", Toast.LENGTH_SHORT).show()
-                finish() // Close the activity
-            }
-        } else {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
         }
     }
 }

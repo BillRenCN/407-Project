@@ -6,4 +6,6 @@
     <string name="title_profile">Profile</string>
     <string name="profile_image">Profile image</string>
     <string name="add_listing">Add listing</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_signup">Sign up</string>
 </resources>

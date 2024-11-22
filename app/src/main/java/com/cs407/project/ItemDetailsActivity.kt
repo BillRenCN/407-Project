@@ -1,41 +1,33 @@
 package com.cs407.project
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
-import com.cs407.project.databinding.ActivityItemDetailsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ItemDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityItemDetailsBinding
-    private lateinit var database: AppDatabase
-    private var itemId: Int = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityItemDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_item_details)
 
-        // Initialize the database
-        database = AppDatabase.getDatabase(this)
+        val itemId = intent.getIntExtra("ITEM_ID", -1) // Retrieve item ID from intent
+        val database = AppDatabase.getDatabase(applicationContext)
 
-        // Retrieve item ID passed through intent
-        itemId = intent.getIntExtra("ITEM_ID", 0)
-
-        // Load item details from the database
-        loadItemDetails(itemId)
-    }
-
-    private fun loadItemDetails(itemId: Int) {
-        lifecycleScope.launch {
-            val item = database.itemDao().getItemById(itemId)
-            item?.let {
-                binding.itemImage.setImageResource(R.drawable.ic_placeholder_image) // Placeholder image
-                binding.itemName.text = it.title
-                binding.itemPrice.text = "$${it.price}"
-                binding.itemDescription.text = it.description
+        if (itemId != -1) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val item = database.itemDao().getItemById(itemId)
+                item?.let {
+                    runOnUiThread {
+                        // Bind data to the UI
+                        findViewById<TextView>(R.id.item_title).text = it.title
+                        findViewById<TextView>(R.id.item_description).text = it.description
+                        findViewById<TextView>(R.id.item_price).text = "$${it.price}"
+                    }
+                }
             }
         }
     }

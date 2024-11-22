@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
@@ -14,26 +15,9 @@ android:padding="16dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item title"
-        android:background="@drawable/input_background"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
         android:inputType="text" />
-
-    <!-- Image Upload Section -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/dotted_background"
-        android:layout_marginBottom="16dp">
-
-        <ImageView
-            android:id="@+id/btn_upload_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_upload_image"
-            android:contentDescription="Upload at least 1 image" />
-    </FrameLayout>
 
     <!-- Item Description Section -->
     <EditText
@@ -42,7 +26,6 @@ android:padding="16dp">
         android:layout_height="wrap_content"
         android:hint="Item description"
         android:minHeight="100dp"
-        android:background="@drawable/input_background"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
         android:inputType="textMultiLine" />
@@ -53,7 +36,6 @@ android:padding="16dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price"
-        android:background="@drawable/input_background"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
         android:inputType="numberDecimal" />

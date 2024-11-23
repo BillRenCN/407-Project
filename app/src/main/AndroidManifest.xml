@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ItemDetailsActivity"
+            android:label="@string/title_item_details" />
+
+        <activity
+            android:name=".PostItemActivity"
+            android:label="@string/title_post_item" />
     </application>
 
 </manifest>

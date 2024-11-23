@@ -1,12 +1,15 @@
 package com.cs407.project.ui.listing
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivities
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.project.ItemDetailsActivity
 import com.cs407.project.R
 import com.cs407.project.lib.displayImage
 import java.text.NumberFormat
@@ -38,6 +41,9 @@ class ListingAdapter(
                 "Item #$position (id ${model.itemId}) clicked",
                 Toast.LENGTH_SHORT
             ).show()
+            val intent = Intent(holder.itemView.context, ItemDetailsActivity::class.java)
+            intent.putExtra("ITEM_ID", model.itemId)
+            startActivities(holder.itemView.context, arrayOf(intent))
         }
     }
 

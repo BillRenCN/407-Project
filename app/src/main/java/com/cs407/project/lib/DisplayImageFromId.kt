@@ -1,6 +1,5 @@
 package com.cs407.project.lib
 
-import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.util.TypedValue
@@ -8,6 +7,12 @@ import android.widget.ImageView
 import com.cs407.project.R
 import java.io.File
 
+/**
+ * Display an image for a given item ID.
+ * Or, if the image does not exist, display an error image.
+ * @param itemId The ID of the item for which to display the image.
+ * @param imageView The ImageView to display the image in.
+ */
 fun displayImage(itemId: Int?, imageView: ImageView) {
     val context = imageView.context
     val filesDir = context.filesDir
@@ -42,6 +47,11 @@ fun displayImage(itemId: Int?, imageView: ImageView) {
     }
 }
 
+/**
+ * Helper function to calculate the inSampleSize for BitmapFactory.
+ * Basically, calculates the largest number that can be used to scale down the image without
+ * losing visual quality.
+ */
 private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int): Int {
     val width: Int = options.outWidth
     var inSampleSize = 1

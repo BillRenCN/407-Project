@@ -16,6 +16,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import java.security.MessageDigest
 import com.cs407.project.data.UsersDatabase
+
 import com.cs407.project.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,6 +87,7 @@ class RegisterFragment : Fragment() {
                 }
                 userDB.userDao().insertUser(User(0, username, hash(password1), email))
                 Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT).show()
+                //Todo: add wireframe
             }
         }
     }

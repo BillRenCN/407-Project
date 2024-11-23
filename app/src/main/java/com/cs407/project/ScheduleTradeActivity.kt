@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.util.Locale
 
-class MainActivity : AppCompatActivity() {
+class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
     private lateinit var locationEditText: EditText
     private lateinit var dateEditText: EditText
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_schedule_trade)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
 
         locationEditText = findViewById(R.id.editTextText2)
@@ -73,14 +73,14 @@ class MainActivity : AppCompatActivity() {
 
                         setLocationMarker(latLng, "locationName")
                     } else {
-                        Toast.makeText(this@MainActivity, "Location not found", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@ScheduleTradeActivity, "Location not found", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun onError(errorMessage: String?) {
                 runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Unable to get location", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ScheduleTradeActivity, "Unable to get location", Toast.LENGTH_SHORT).show()
                 }
             }
         })

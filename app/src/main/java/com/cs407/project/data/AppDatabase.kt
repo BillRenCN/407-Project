@@ -26,3 +26,29 @@ abstract class AppDatabase : RoomDatabase() {
         }
     }
 }
+
+// Second database: Users
+@Database(entities = [User::class], version = 1, exportSchema = false)
+abstract class UsersDatabase : RoomDatabase() {
+    abstract fun userDao(): UserDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: UsersDatabase? = null
+
+        fun getDatabase(context: Context): UsersDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    UsersDatabase::class.java,
+                    "users_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
+
+
+

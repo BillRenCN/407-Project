@@ -7,15 +7,16 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <EditText
+        android:hint="@string/your_name"
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:autofillHints="name"
+        android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textSize="36sp"
-        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/image" />
@@ -33,15 +34,16 @@
         tools:src="@tools:sample/avatars" />
 
     <EditText
+        android:hint="@string/your_profile_description"
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textAutoCorrect"
         android:textAlignment="center"
         android:textSize="20sp"
-        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name" />
@@ -55,5 +57,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:text="@string/log_out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,39 +1,64 @@
 [versions]
 agp = "8.7.2"
+espressoIntents = "3.6.1"
 kotlin = "1.9.24"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
+kotlinxCoroutinesTest = "1.9.0"
 material = "1.12.0"
 activity = "1.9.3"
 constraintlayout = "2.2.0"
+mockitoCore = "5.14.2"
+mockitoInline = "5.2.0"
+mockitoKotlin = "5.4.0"
+playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
-navigationFragmentKtx = "2.8.3"
-navigationUiKtx = "2.8.3"
+navigationFragmentKtx = "2.8.4"
+navigationUiKtx = "2.8.4"
+robolectric = "4.14.1"
+roborazzi = "1.33.0"
 roomRuntime = "2.6.1"
-annotation = "1.6.0"
+rules = "1.6.1"
+runner = "1.6.2"
+secretsGradlePlugin = "2.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "espressoCore" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espressoIntents" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
-androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+roborazzi = { module = "io.github.takahirom.roborazzi:roborazzi", version.ref = "roborazzi" }
+roborazzi-junit-rule = { module = "io.github.takahirom.roborazzi:roborazzi-junit-rule", version.ref = "roborazzi" }
+secrets-gradle-plugin = { module = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

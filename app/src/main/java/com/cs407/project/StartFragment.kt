@@ -1,7 +1,6 @@
 package com.cs407.project
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +36,7 @@ class StartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view=inflater.inflate(R.layout.fragment_start, container, false)
-        val parentView=inflater.inflate(R.layout.activity_main, container, false)
+        val parentView=inflater.inflate(R.layout.activity_login_register, container, false)
         val fragmentWindow=parentView.findViewById<FragmentContainerView>(R.id.startfragment)
         view.findViewById<Button>(R.id.loginbutton).setOnClickListener{
            //todo: change the height to 300dp

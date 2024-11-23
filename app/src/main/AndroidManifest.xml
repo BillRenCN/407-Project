@@ -37,6 +37,8 @@ xmlns:tools="http://schemas.android.com/tools">
         android:label="@string/title_activity_signup" />
 
     <activity android:name=".PostItemActivity" />
+    <activity android:name=".ItemDetailsActivity"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 </application>
 </manifest>

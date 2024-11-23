@@ -21,3 +21,4 @@ class PreferencesManager(context: Context) {
         return email == savedEmail && password == savedPassword
     }
 }
+

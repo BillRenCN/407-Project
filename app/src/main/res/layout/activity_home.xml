@@ -1,26 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
 
-<!-- RecyclerView for item list -->
+<com.google.android.material.appbar.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:title="Home"
+        android:titleTextColor="@android:color/white" />
+</com.google.android.material.appbar.AppBarLayout>
+
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/item_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_above="@+id/fab_post_item"
-    android:padding="16dp" />
+    android:layout_marginTop="?attr/actionBarSize"
+    android:padding="8dp" />
 
-<!-- Floating Action Button -->
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab_post_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentEnd="true"
-    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom|end"
     android:layout_margin="16dp"
-    android:contentDescription="Add Item"
     android:src="@drawable/ic_add"
     android:tint="@android:color/white"
     android:backgroundTint="@color/purple_500" />
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

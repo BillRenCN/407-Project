@@ -21,7 +21,7 @@ android:padding="16dp">
 
     <!-- Item Information -->
     <TextView
-        android:id="@+id/item_name"
+        android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name of Item"

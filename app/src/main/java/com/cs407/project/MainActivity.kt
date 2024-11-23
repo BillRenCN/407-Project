@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar?.title = "SwapCircle" // Set the title to SwapCircle
         preferencesManager = PreferencesManager(this)
 
         val emailInput: EditText = findViewById(R.id.email_input)

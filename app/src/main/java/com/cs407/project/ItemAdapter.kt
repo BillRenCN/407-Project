@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.data.Item
 
-class ItemAdapter(private var items: List<Item>) :
+class ItemAdapter(private var items: List<Item>, private val onItemClick: (Item) -> Unit) :
     RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,12 +26,17 @@ class ItemAdapter(private var items: List<Item>) :
         holder.title.text = item.title
         holder.description.text = item.description
         holder.price.text = "$${item.price}"
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int {
+        return items.size
+    }
 
     fun updateItems(newItems: List<Item>) {
         items = newItems
-        notifyDataSetChanged()
+        notifyDataSetChanged() // Notify RecyclerView of data changes
     }
 }

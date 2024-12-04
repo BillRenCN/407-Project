@@ -1,6 +1,6 @@
 package com.cs407.project
 
-
+import java.time.Instant
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -76,7 +76,7 @@ class RegisterFragment : Fragment() {
                     return@launch
                 }
 
-                userDao.insertUser(User(0, username, hash(password), email))
+                userDao.insertUser(User(0, username, hash(password), email, 0, 0.0, Instant.now().epochSecond))
                 Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT)
                     .show()
             }

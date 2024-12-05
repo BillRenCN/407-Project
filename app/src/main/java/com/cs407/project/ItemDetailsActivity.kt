@@ -34,7 +34,10 @@ class ItemDetailsActivity : AppCompatActivity() {
             item?.let {
                 binding.itemImage.setImageResource(R.drawable.ic_placeholder_image) // Placeholder image
                 binding.itemName.text = it.title
-                binding.itemPrice.text = "$${it.price}"
+                binding.itemPrice.text = buildString {
+                    append("$")
+                    append(it.price)
+                }
                 binding.itemDescription.text = it.description
             }
         }

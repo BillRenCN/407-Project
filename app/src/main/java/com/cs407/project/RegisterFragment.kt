@@ -1,6 +1,6 @@
 package com.cs407.project
 
-import java.time.Instant
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.User
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.lib.hash
@@ -76,9 +77,16 @@ class RegisterFragment : Fragment() {
                     return@launch
                 }
 
-                userDao.insertUser(User(0, username, hash(password), email, 0, 0.0, Instant.now().epochSecond))
+                userDao.insertUser(User(0, username, hash(password), email, 0, 0.0, System.currentTimeMillis()/1000))
+                val sharedPrefs = SharedPreferences(requireContext())
+                sharedPrefs.saveLogin(username, password)
                 Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT)
                     .show()
+
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+
+                activity?.finish()
             }
         }
     }

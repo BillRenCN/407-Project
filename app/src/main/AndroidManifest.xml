@@ -37,7 +37,7 @@
             android:name=".ScheduleTradeActivity" />
 
         <activity
-            android:name=".ItemDetailsActivity"
+            android:name=".ui.listing.ListingDetailsActivity"
             android:label="@string/title_item_details" />
 
         <activity

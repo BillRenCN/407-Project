@@ -1,6 +1,7 @@
 package com.cs407.project.lib
 
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.util.Log
 import android.util.TypedValue
 import android.widget.ImageView
@@ -13,7 +14,14 @@ import java.io.File
  * @param itemId The ID of the item for which to display the image.
  * @param imageView The ImageView to display the image in.
  */
-fun displayImage(itemId: Int?, imageView: ImageView) {
+fun displayImage(itemId: Int?, imageView: ImageView, path: String) {
+    imageView.setBackgroundColor(Color.TRANSPARENT)
+    if (itemId == null) {
+        imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+        imageView.setImageResource(R.drawable.error_image)
+        return
+    }
+
     val context = imageView.context
     val filesDir = context.filesDir
     val imagesDir = "${filesDir.absolutePath}/images"

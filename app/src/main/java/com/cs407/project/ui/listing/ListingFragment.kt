@@ -49,7 +49,6 @@ class ListingFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener {
             Toast.makeText(context, "Floating action button clicked", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, AddListingActivity::class.java)
-
             resultHandler.launch(intent)
         }
 

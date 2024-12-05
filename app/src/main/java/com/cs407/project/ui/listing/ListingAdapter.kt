@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat.startActivities
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.cs407.project.ItemDetailsActivity
 import com.cs407.project.R
 import com.cs407.project.data.Item
 import com.cs407.project.lib.displayImage
@@ -45,7 +44,7 @@ class ListingAdapter(
         val priceFormat = NumberFormat.getCurrencyInstance()
         priceFormat.currency = Currency.getInstance("USD")
         holder.itemPrice.text = priceFormat.format(model.price)
-        displayImage(model.id, holder.imageView)
+        displayImage(model.id, holder.imageView, "listing")
 
         holder.itemView.setOnClickListener {
             // launch item details activity here
@@ -54,7 +53,7 @@ class ListingAdapter(
                 "Item #$position (id ${model.id}) clicked",
                 Toast.LENGTH_SHORT
             ).show()
-            val intent = Intent(holder.itemView.context, ItemDetailsActivity::class.java)
+            val intent = Intent(holder.itemView.context, ListingDetailsActivity::class.java)
             intent.putExtra("ITEM_ID", model.id)
             startActivities(holder.itemView.context, arrayOf(intent))
         }

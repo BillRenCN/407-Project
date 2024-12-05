@@ -11,6 +11,7 @@ data class User(
     val email: String,
     val sales: Int,
     val rating: Double,
-    val date: Long
+    val date: Long,
+    val description: String
 )
 

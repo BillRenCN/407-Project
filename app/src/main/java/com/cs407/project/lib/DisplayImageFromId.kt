@@ -51,7 +51,7 @@ fun displayImage(itemId: Int?, imageView: ImageView, path: String) {
     } else {
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
         imageView.setImageResource(R.drawable.error_image)
-        Log.e("ListingAdapter", "Image does not exist for item $itemId")
+        Log.e("ListingAdapter", "Image does not exist for $path $itemId")
     }
 }
 

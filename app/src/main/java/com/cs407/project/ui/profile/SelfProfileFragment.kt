@@ -18,7 +18,7 @@ import com.cs407.project.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
 
 
-class ProfileFragment : Fragment() {
+class SelfProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
 

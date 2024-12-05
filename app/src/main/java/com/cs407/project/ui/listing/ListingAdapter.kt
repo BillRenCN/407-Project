@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivities
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,7 @@ import java.util.Currency
 
 @SuppressLint("NotifyDataSetChanged")
 class ListingAdapter(
-    private val allItems: LiveData<List<Item>>, private val lifecycleOwner: LifecycleOwner
+    private val allItems: LiveData<List<Item>>, lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<ListingAdapter.ViewHolder>() {
 
     init {
@@ -55,7 +54,7 @@ class ListingAdapter(
             ).show()
             val intent = Intent(holder.itemView.context, ListingDetailsActivity::class.java)
             intent.putExtra("ITEM_ID", model.id)
-            startActivities(holder.itemView.context, arrayOf(intent))
+            holder.itemView.context.startActivity(intent)
         }
     }
 

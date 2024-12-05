@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.cs407.project.data.User
 
 @Dao
 interface UserDao {
@@ -16,7 +17,7 @@ interface UserDao {
     suspend fun getItemById(username: String): User?
 
     @Query("SELECT * FROM users WHERE userId=:id")
-    suspend fun getById(id: Int): User
+    suspend fun getById(id: Int): User?
 
     @Query("DELETE FROM users WHERE userId=:userId")
     suspend fun deleteUser(userId: Int)

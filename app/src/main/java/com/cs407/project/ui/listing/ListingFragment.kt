@@ -1,54 +1,59 @@
 package com.cs407.project.ui.listing
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cs407.project.PostItemActivity
+import com.cs407.project.data.AppDatabase
 import com.cs407.project.databinding.FragmentListingBinding
 
 class ListingFragment : Fragment() {
 
     private var _binding: FragmentListingBinding? = null
+    private lateinit var appDB: AppDatabase
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var viewModel: ListingViewModel
+    private lateinit var adapter: ListingAdapter
+
+    @SuppressLint("NotifyDataSetChanged")
+    val resultHandler =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            viewModel.refreshListings()
+            adapter.notifyDataSetChanged()
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val listingViewModel = ViewModelProvider(this)[ListingViewModel::class.java]
+        appDB = AppDatabase.getDatabase(requireContext())
+
+        val viewModel: ListingViewModel by activityViewModels()
+        this.viewModel = viewModel
+
+        this.adapter = ListingAdapter(viewModel.allListings, viewLifecycleOwner)
 
         _binding = FragmentListingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.floatingActionButton.setOnClickListener {
             Toast.makeText(context, "Floating action button clicked", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context, PostItemActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(context, AddListingActivity::class.java)
+
+            resultHandler.launch(intent)
         }
 
-//        val textView: TextView = binding.textListing
-//        listingViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-
-        val listingModelArrayList: ArrayList<ListingModel> = ArrayList()
-        for (i in 0..100) {
-            listingModelArrayList.add(ListingModel("Item $i", "Short description $i", 0))
-        }
-
-        val recyclerView = binding.recyclerView
-        recyclerView.layoutManager =
+        binding.recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = ListingAdapter(listingModelArrayList)
+        binding.recyclerView.adapter = adapter
 
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return root

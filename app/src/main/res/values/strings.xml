@@ -22,4 +22,6 @@
     <string name="log_out">Log Out</string>
     <string name="your_profile_description">Your profile description</string>
     <string name="your_name">Your name</string>
+    <string name="loading_items">Loading items...</string>
+    <string name="no_items_found">No items found</string>
 </resources>

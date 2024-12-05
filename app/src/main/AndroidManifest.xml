@@ -41,7 +41,7 @@
             android:label="@string/title_item_details" />
 
         <activity
-            android:name=".PostItemActivity"
+            android:name=".ui.listing.AddListingActivity"
             android:label="@string/title_post_item" />
 
         <meta-data

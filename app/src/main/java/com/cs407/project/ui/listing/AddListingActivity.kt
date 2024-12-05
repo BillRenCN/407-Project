@@ -1,7 +1,8 @@
-package com.cs407.project
+package com.cs407.project.ui.listing
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
@@ -9,7 +10,7 @@ import com.cs407.project.data.Item
 import com.cs407.project.databinding.ActivityPostItemBinding
 import kotlinx.coroutines.launch
 
-class PostItemActivity : AppCompatActivity() {
+class AddListingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostItemBinding
     private lateinit var database: AppDatabase
@@ -48,7 +49,7 @@ class PostItemActivity : AppCompatActivity() {
             // Insert the item into the database
             lifecycleScope.launch {
                 database.itemDao().insertItem(newItem)
-                Toast.makeText(this@PostItemActivity, "Item posted successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT).show()
                 finish() // Close the activity
             }
         } else {

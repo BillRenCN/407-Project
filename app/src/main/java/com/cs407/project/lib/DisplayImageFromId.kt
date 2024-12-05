@@ -24,7 +24,7 @@ fun displayImage(itemId: Int?, imageView: ImageView, path: String) {
 
     val context = imageView.context
     val filesDir = context.filesDir
-    val imagesDir = "${filesDir.absolutePath}/images"
+    val imagesDir = "${filesDir.absolutePath}/${path}"
     val imagesDirFile = File(imagesDir)
     if (!imagesDirFile.exists()) {
         imagesDirFile.mkdirs()
@@ -51,7 +51,7 @@ fun displayImage(itemId: Int?, imageView: ImageView, path: String) {
     } else {
         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
         imageView.setImageResource(R.drawable.error_image)
-        Log.e("ListingAdapter", "Image does not exist for $path $itemId")
+        Log.e("ListingAdapter", "Image does not exist at $path/$itemId in ${filesDir.absolutePath}")
     }
 }
 

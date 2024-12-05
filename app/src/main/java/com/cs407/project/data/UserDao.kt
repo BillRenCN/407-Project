@@ -13,7 +13,7 @@ interface UserDao {
 
     // Get a single item by its ID
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
-    suspend fun getItemById(username: String): User?
+    suspend fun getUserByUsername(username: String): User
 
     @Query("SELECT * FROM users WHERE userId=:id")
     suspend fun getById(id: Int): User
@@ -34,4 +34,5 @@ interface UserDao {
 
     @Query("SELECT password FROM users WHERE username = :username LIMIT 1")
     suspend fun getPasswordHashByUsername(username: String): String?
+
 }

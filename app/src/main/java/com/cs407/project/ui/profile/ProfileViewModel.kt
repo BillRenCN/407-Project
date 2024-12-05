@@ -9,12 +9,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 data class UserState(
-    val userName: String = "No name provided",
+    val userName: String = "No Name Provided",
     val userId: Int = 0,
-    val userDescription: String? = "No description",
+    val userDescription: String? = "No Description Provided"
+    /*
     val rating: Float = 0f,
     val comments: List<String> = emptyList(),
     val items: List<String> = emptyList()
+     */
 )
 
 class ProfileViewModel : ViewModel() {
@@ -38,7 +40,7 @@ class ProfileViewModel : ViewModel() {
 
     fun setDescription(description: String) {
         _userState.update {
-            it.copy(userDescription = description)
+            it.copy(userName = description)
         }
     }
 }

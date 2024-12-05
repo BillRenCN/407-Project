@@ -11,16 +11,20 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.lib.hash
+import com.cs407.project.ui.profile.ProfileViewModel
+import com.cs407.project.ui.profile.UserState
 import kotlinx.coroutines.launch
 
-class LoginFragment : Fragment() {
+class LoginFragment(private val injectedProfileViewModel: ProfileViewModel? = null) : Fragment() {
     private lateinit var usernameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var userDB: UsersDatabase
+    private lateinit var profileViewModel: ProfileViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -30,6 +34,10 @@ class LoginFragment : Fragment() {
         usernameEditText = view.findViewById(R.id.emailEditText)
         passwordEditText = view.findViewById(R.id.passwordEditText)
         loginButton = view.findViewById(R.id.userLoginButton)
+
+        profileViewModel = injectedProfileViewModel ?:
+                ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
+
         val backButton = view.findViewById<ImageButton>(R.id.backArrowButton)
         backButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.replace(
@@ -50,7 +58,6 @@ class LoginFragment : Fragment() {
                 return@setOnClickListener
             }
             lifecycleScope.launch {
-                //userExist and emailExist cannot both be true
                 val userDao = userDB.userDao()
                 val realPasswordHash: String?
 
@@ -68,6 +75,10 @@ class LoginFragment : Fragment() {
                     val sharedPrefs = SharedPreferences(requireContext())
                     sharedPrefs.saveLogin(username, password)
 
+                    val user = userDao.getUserByUsername(username)
+                    if (user != null) {
+                        profileViewModel.setUser(UserState(username, user.userId))
+                    }
                     Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
 
                     val intent = Intent(requireContext(), MainActivity::class.java)

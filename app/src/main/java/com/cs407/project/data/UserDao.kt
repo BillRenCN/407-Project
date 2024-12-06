@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+
 @Dao
 interface UserDao {
     // Insert a user into the database
@@ -34,5 +35,8 @@ interface UserDao {
 
     @Query("SELECT password FROM users WHERE username = :username LIMIT 1")
     suspend fun getPasswordHashByUsername(username: String): String?
+
+    @Query("SELECT date FROM users WHERE username = :username LIMIT 1")
+    suspend fun getDateByUsername(username: String): Long
 
 }

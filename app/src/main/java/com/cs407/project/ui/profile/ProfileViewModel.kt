@@ -1,6 +1,8 @@
 package com.cs407.project.ui.profile
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +13,7 @@ import kotlinx.coroutines.flow.update
 data class UserState(
     val userName: String = "No Name Provided",
     val userId: Int = 0,
-    val userDescription: String? = "No Description Provided"
+    //val userDescription: String? = "No Description Provided"
     /*
     val rating: Float = 0f,
     val comments: List<String> = emptyList(),
@@ -19,8 +21,7 @@ data class UserState(
      */
 )
 
-class ProfileViewModel : ViewModel() {
-
+class ProfileViewModel(application: Application): AndroidViewModel(application) {
     // Expose screen UI state
     private val _userState = MutableStateFlow(UserState())
     val userState = _userState.asStateFlow()

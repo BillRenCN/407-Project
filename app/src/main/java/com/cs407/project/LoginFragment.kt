@@ -1,7 +1,9 @@
 package com.cs407.project
 
+import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +37,11 @@ class LoginFragment(private val injectedProfileViewModel: ProfileViewModel? = nu
         passwordEditText = view.findViewById(R.id.passwordEditText)
         loginButton = view.findViewById(R.id.userLoginButton)
 
-        profileViewModel = injectedProfileViewModel ?:
-                ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
+        profileViewModel = if (injectedProfileViewModel != null) {
+            injectedProfileViewModel
+        } else {
+            ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
+        }
 
         val backButton = view.findViewById<ImageButton>(R.id.backArrowButton)
         backButton.setOnClickListener {
@@ -74,16 +79,11 @@ class LoginFragment(private val injectedProfileViewModel: ProfileViewModel? = nu
                 if (hash(password) == realPasswordHash) {
                     val sharedPrefs = SharedPreferences(requireContext())
                     sharedPrefs.saveLogin(username, password)
-
-                    val user = userDao.getUserByUsername(username)
-                    if (user != null) {
-                        profileViewModel.setUser(UserState(username, user.userId))
-                    }
                     Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
-
+                    profileViewModel.setUser(UserState(username, 0))
+                    Log.d("Set Username:", profileViewModel.userState.value.userName)
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
-
                     activity?.finish()
                 } else {
                     Toast.makeText(requireContext(), "Login Failed!", Toast.LENGTH_SHORT).show()

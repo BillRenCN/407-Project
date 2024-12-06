@@ -7,6 +7,7 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <LinearLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -80,16 +81,26 @@
                 android:textColor="@color/cardview_dark_background"/>
         </LinearLayout>
         <View
+            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#D3D3D3" />
     </LinearLayout>
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/list"
+        android:layout_width="0dp"
+        android:layout_height="400dp"
+        tools:layout="@layout/fragment_review_list"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9" />
     <Button
         android:id="@+id/button_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/log_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

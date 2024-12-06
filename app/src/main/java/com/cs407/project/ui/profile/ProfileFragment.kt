@@ -6,14 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.cs407.project.LauncherActivity
+import com.cs407.project.R
+import com.cs407.project.StartFragment
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileBinding
+import com.cs407.project.ui.listing.ListingFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -39,6 +43,13 @@ class ProfileFragment(private val injectedProfileViewModel: ProfileViewModel? = 
         val root: View = binding.root
         val sharedPrefs = SharedPreferences(requireContext())
         val username=sharedPrefs.getLogin().username.toString()
+
+        val registerButton= view?.findViewById<Button>(R.id.listing_button)
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.replace(R.id.list, ListingFragment::class.java, null)  // Pass the fragment instance here
+            ?.setReorderingAllowed(true)
+            ?.addToBackStack("loading listing fragment")
+            ?.commit()
 
         val logoutButton = binding.buttonLogout
         logoutButton.setOnClickListener {

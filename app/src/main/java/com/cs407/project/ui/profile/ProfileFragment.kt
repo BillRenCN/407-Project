@@ -45,6 +45,7 @@ class ProfileFragment(private val injectedProfileViewModel: ProfileViewModel? = 
             }
         }
 
+
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
         return root

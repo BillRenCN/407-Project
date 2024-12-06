@@ -39,4 +39,7 @@ interface UserDao {
     @Query("SELECT date FROM users WHERE username = :username LIMIT 1")
     suspend fun getDateByUsername(username: String): Long
 
+    @Query("SELECT userId FROM users WHERE username = :username LIMIT 1")
+    suspend fun getIdByUsername(username: String): Int
+
 }

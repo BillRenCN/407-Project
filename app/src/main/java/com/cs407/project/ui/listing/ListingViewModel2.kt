@@ -7,10 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
+import com.cs407.project.data.SharedPreferences
 import kotlinx.coroutines.launch
 
-class ListingViewModel(application: Application) : AndroidViewModel(application) {
+class ListingViewModel2(application: Application) : AndroidViewModel(application) {
+
     private val database = AppDatabase.getDatabase(application)
+
     private val _allListings = MutableLiveData<List<Item>>()
     val allListings: LiveData<List<Item>> get() = _allListings
 
@@ -40,21 +43,17 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     }
 
     init {
-        refreshListings()
+        // We do not initialize the listings here, it's done in ListingFragment2
     }
 
-    fun refreshListings() {
+    fun refreshListings(userId: Int) {
         _isLoading.postValue(true)
         _searchQuery.value = ""
         viewModelScope.launch {
-            val items = database.itemDao().getAllItems()
+            val items = database.itemDao().getItemsByUserId(userId)
             _allListings.postValue(items)
             _filteredListings.postValue(items)
             _isLoading.postValue(false)
         }
     }
-
-
-
-
 }

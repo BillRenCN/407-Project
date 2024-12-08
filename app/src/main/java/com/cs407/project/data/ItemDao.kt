@@ -43,4 +43,5 @@ interface ItemDao {
     // Delete an item by its ID
     @Query("DELETE FROM items WHERE id = :itemId")
     suspend fun deleteItemById(itemId: Int)
+
 }

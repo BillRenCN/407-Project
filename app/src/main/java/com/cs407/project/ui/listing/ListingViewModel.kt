@@ -17,15 +17,39 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    private val _filteredListings = MutableLiveData<List<Item>>()
+    val filteredListings: LiveData<List<Item>> get() = _filteredListings
+
+    private val _searchQuery = MutableLiveData<String>()
+    val searchQuery: LiveData<String> get() = _searchQuery
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
+        filterListings(query)
+    }
+
+    fun filterListings(query: String) {
+        viewModelScope.launch {
+            if (query.isEmpty()) {
+                _filteredListings.postValue(_allListings.value)
+                return@launch
+            }
+            val items = database.itemDao().searchItemsByTitle(query)
+            _filteredListings.postValue(items)
+        }
+    }
+
     init {
         refreshListings()
     }
 
     fun refreshListings() {
         _isLoading.postValue(true)
+        _searchQuery.value = ""
         viewModelScope.launch {
             val items = database.itemDao().getAllItems()
             _allListings.postValue(items)
+            _filteredListings.postValue(items)
             _isLoading.postValue(false)
         }
     }

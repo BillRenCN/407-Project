@@ -1,10 +1,22 @@
 package com.cs407.project.data
 
 import androidx.room.Dao
+import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.PrimaryKey
 import androidx.room.Query
-import com.cs407.project.data.Item
+
+// For some reason if the entity is separate from the DAO it will fail to compile sometimes
+@Entity(tableName = "items")
+data class Item(
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val title: String,
+    val description: String,
+    val price: Double,
+    val userId: Int
+)
 
 @Dao
 interface ItemDao {
@@ -23,6 +35,10 @@ interface ItemDao {
     // Get all items by a specific user ID
     @Query("SELECT * FROM items WHERE userId = :userId")
     suspend fun getItemsByUserId(userId: Int): List<Item>
+
+    // Search for item using title
+    @Query("SELECT * FROM items WHERE title LIKE '%' || :query || '%'")
+    suspend fun searchItemsByTitle(query: String): List<Item>
 
     // Delete an item by its ID
     @Query("DELETE FROM items WHERE id = :itemId")

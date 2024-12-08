@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import com.cs407.project.R
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +41,7 @@ class ListingFragment : Fragment() {
         val viewModel: ListingViewModel by activityViewModels()
         this.viewModel = viewModel
 
-        this.adapter = ListingAdapter(viewModel.allListings, viewLifecycleOwner)
+        this.adapter = ListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
 
         _binding = FragmentListingBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -62,6 +63,7 @@ class ListingFragment : Fragment() {
         })
 
         viewModel.allListings.observe(viewLifecycleOwner, Observer { items ->
+            binding.searchView.setQuery("", false)
             if (items.isEmpty()) {
                 binding.textView3.text = getString(R.string.no_items_found)
                 binding.textView3.visibility = View.VISIBLE
@@ -69,6 +71,25 @@ class ListingFragment : Fragment() {
                 binding.textView3.visibility = View.GONE
             }
         })
+
+        viewModel.searchQuery.observe(viewLifecycleOwner, Observer { query ->
+            viewModel.filterListings(query)
+        })
+
+        class SearchTextListener : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                viewModel.setSearchQuery(p0 ?: "")
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                viewModel.setSearchQuery(p0 ?: "")
+                return true
+            }
+
+        }
+
+        binding.searchView.setOnQueryTextListener(SearchTextListener())
 
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return root

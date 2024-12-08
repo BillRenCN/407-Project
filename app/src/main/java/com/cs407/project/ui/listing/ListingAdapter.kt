@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -46,12 +45,6 @@ class ListingAdapter(
         displayImage(model.id, holder.imageView, "listing")
 
         holder.itemView.setOnClickListener {
-            // launch item details activity here
-            Toast.makeText(
-                holder.itemView.context,
-                "Item #$position (id ${model.id}) clicked",
-                Toast.LENGTH_SHORT
-            ).show()
             val intent = Intent(holder.itemView.context, ListingDetailsActivity::class.java)
             intent.putExtra("ITEM_ID", model.id)
             holder.itemView.context.startActivity(intent)

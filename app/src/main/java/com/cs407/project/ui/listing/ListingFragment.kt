@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.cs407.project.R
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -47,7 +46,6 @@ class ListingFragment : Fragment() {
         val root: View = binding.root
 
         binding.floatingActionButton.setOnClickListener {
-            Toast.makeText(context, "Floating action button clicked", Toast.LENGTH_SHORT).show()
             val intent = Intent(context, AddListingActivity::class.java)
             resultHandler.launch(intent)
         }

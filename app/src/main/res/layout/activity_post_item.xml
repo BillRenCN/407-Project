@@ -9,15 +9,22 @@ android:padding="16dp">
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <!-- Placeholder for the top toolbar space -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+    android:layout_marginBottom="16dp" />
+
     <!-- Item Title Section -->
     <EditText
         android:id="@+id/item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Item title"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:inputType="text" />
+        android:minHeight="48dp"
+    android:layout_marginBottom="16dp"
+    android:padding="12dp"
+    android:inputType="text" />
 
     <!-- Item Description Section -->
     <EditText
@@ -27,8 +34,8 @@ android:padding="16dp">
         android:hint="Item description"
         android:minHeight="100dp"
         android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:inputType="textMultiLine" />
+        android:padding="12dp"
+    android:inputType="textMultiLine" />
 
     <!-- Price Section -->
     <EditText
@@ -36,9 +43,10 @@ android:padding="16dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Price"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp"
-        android:inputType="numberDecimal" />
+        android:minHeight="48dp"
+    android:layout_marginBottom="16dp"
+    android:padding="12dp"
+    android:inputType="numberDecimal" />
 
     <!-- Agreement Checkbox -->
     <CheckBox

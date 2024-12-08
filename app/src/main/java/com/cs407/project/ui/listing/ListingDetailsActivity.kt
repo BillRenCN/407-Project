@@ -12,6 +12,8 @@ import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivityItemDetailsBinding
 import com.cs407.project.lib.displayImage
 import com.cs407.project.ui.profile.ProfileActivity
+import com.cs407.project.ui.trade_feedback.LeaveCommentActivity
+import com.cs407.project.ui.trade_feedback.ScheduleTradeActivity
 import kotlinx.coroutines.launch
 
 class ListingDetailsActivity : AppCompatActivity() {
@@ -41,6 +43,25 @@ class ListingDetailsActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra("USER_ID", userId)
             this.startActivity(intent)
+        }
+        binding.btnLeaveComment.setOnClickListener {
+            Toast.makeText(this, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
+            // You can add the logic for leaving a comment here
+            val intent = Intent(this, LeaveCommentActivity::class.java)
+            intent.putExtra("ITEM_ID", userId)
+            this.startActivity(intent)
+        }
+
+        binding.btnScheduleTrade.setOnClickListener {
+            val intent = Intent(this, ScheduleTradeActivity::class.java)
+            intent.putExtra("ITEM_ID", userId)
+            Toast.makeText(this, "ScheduleTrade clicked", Toast.LENGTH_SHORT).show()
+            this.startActivity(intent)
+        }
+
+        binding.btnViewReviews.setOnClickListener {
+            Toast.makeText(this, "View All Reviews clicked", Toast.LENGTH_SHORT).show()
+            // You can add the logic for viewing reviews here
         }
     }
 

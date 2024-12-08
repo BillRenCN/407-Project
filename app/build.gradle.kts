@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     id("io.github.takahirom.roborazzi") version "1.8.0-alpha-5"

@@ -28,16 +28,10 @@ class EditProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
         view.findViewById<Button>(R.id.usernamebutton).setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(
-                R.id.startfragment,
-                LoginFragment::class.java,
-                null
-            )
-                ?.setReorderingAllowed(true)?.addToBackStack("loading login fragment")?.commit()
+            (requireActivity() as MainActivity).navigateEditUsername()
         }
 
         view.findViewById<Button>(R.id.passwordbutton).setOnClickListener {
-            Log.d("was", "this the problem?")
             (requireActivity() as MainActivity).navigateEditPassword()
         }
 

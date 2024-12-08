@@ -33,5 +33,11 @@
         android:id="@+id/editPasswordFragment"
         android:name="com.cs407.project.EditPasswordFragment"
         android:label="Edit Profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_password" />
+
+    <fragment
+        android:id="@+id/editUsernameFragment"
+        android:name="com.cs407.project.EditUsernameFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_username" />
 </navigation>

@@ -52,24 +52,44 @@ class EditPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         saveButton.setOnClickListener {
-            val password1 = newPassword1.text.toString()
-            val password2 = newPassword2.text.toString()
-            if (newPassword1==newPassword2){
-                val sharedPrefs = SharedPreferences(requireContext())
-                val username=sharedPrefs.getLogin().username.toString()
-                lifecycleScope.launch{
-                    userDB.userDao().updatePasswordByUsername(username, newPassword1.toString())
-                }
-                sharedPrefs.saveLogin(username, newPassword1.toString())
-                findNavController().popBackStack()
+            val password1 = newPassword1.text.toString().trim()
+            val password2 = newPassword2.text.toString().trim()
+
+            if (password1.isEmpty() || password2.isEmpty()) {
+                Toast.makeText(
+                    requireContext(), "Password fields cannot be empty!", Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
             }
-            else{
+
+            if (password1 == password2) {
+                val hashedPassword = hash(password1)
+                val sharedPrefs = SharedPreferences(requireContext())
+                val username = sharedPrefs.getLogin().username.toString()
+
+                lifecycleScope.launch {
+                    try {
+                        userDB.userDao().updatePasswordByUsername(username, hashedPassword)
+                        sharedPrefs.saveLogin(username, hashedPassword)
+
+                        Toast.makeText(
+                            requireContext(), "Password Updated!", Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().popBackStack()
+                    } catch (e: Exception) {
+                        Log.e("EditPasswordFragment", "Error updating password: ${e.message}")
+                        Toast.makeText(
+                            requireContext(), "An error occurred while updating the password.", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
                 Toast.makeText(
                     requireContext(), "Passwords do not match!", Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
-
-
 }
+
+

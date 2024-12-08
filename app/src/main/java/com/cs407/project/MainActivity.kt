@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.editPasswordFragment)
     }
 
+    fun navigateEditUsername() {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.editUsernameFragment)
+    }
+
 
 
 

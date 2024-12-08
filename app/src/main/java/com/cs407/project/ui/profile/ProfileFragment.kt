@@ -76,6 +76,11 @@ class ProfileFragment(private val injectedProfileViewModel: ProfileViewModel? = 
             requireActivity().finish()
         }
 
+        val editProfile=binding.myButton
+        editProfile.setOnClickListener {
+            (requireActivity() as MainActivity).replaceProfileFragmentWithEditProfile()
+        }
+
 
 
 

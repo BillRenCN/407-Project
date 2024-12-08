@@ -42,4 +42,7 @@ interface UserDao {
     @Query("SELECT userId FROM users WHERE username = :username LIMIT 1")
     suspend fun getIdByUsername(username: String): Int
 
+    @Query("UPDATE users SET password = :newPassword WHERE username = :username")
+    suspend fun updatePasswordByUsername(username: String, newPassword: String): Int
+
 }

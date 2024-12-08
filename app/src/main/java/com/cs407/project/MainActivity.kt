@@ -3,11 +3,14 @@ package com.cs407.project
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.cs407.project.databinding.ActivityMainBinding
+import com.cs407.project.ui.profile.ProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -37,15 +40,17 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    // Method to replace ProfileFragment with EditProfileFragment
     fun replaceProfileFragmentWithEditProfile() {
-        Log.d("method called", "hi")
-        val editProfileFragment = EditProfileFragment()
-
-        // Perform fragment transaction
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment_activity_main, editProfileFragment)
-            .addToBackStack(null)  // Optional: Adds this transaction to the back stack
-            .commit()
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.editProfileFragment)
     }
+
+    fun navigateEditPassword() {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.editPasswordFragment)
+    }
+
+
+
+
 }

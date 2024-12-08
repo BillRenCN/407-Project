@@ -1,11 +1,14 @@
 package com.cs407.project
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,9 +20,6 @@ import android.widget.Button
  * create an instance of this fragment.
  */
 class EditProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,15 +37,17 @@ class EditProfileFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.passwordbutton).setOnClickListener {
-            activity?.supportFragmentManager?.beginTransaction()?.replace(
-                R.id.startfragment,
-                RegisterFragment::class.java,
-                null
-            )
-                ?.setReorderingAllowed(true)?.addToBackStack("loading register fragment")?.commit()
+            Log.d("was", "this the problem?")
+            (requireActivity() as MainActivity).navigateEditPassword()
+        }
+
+        view.findViewById<ImageButton>(R.id.backArrowButton).setOnClickListener{
+            findNavController().popBackStack()
         }
         return view
     }
+
+
 
 
 }

@@ -7,13 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.cs407.project.EditProfileFragment
 import com.cs407.project.LauncherActivity
+import com.cs407.project.MainActivity
 import com.cs407.project.R
-import com.cs407.project.StartFragment
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileBinding
@@ -35,21 +37,36 @@ class ProfileFragment(private val injectedProfileViewModel: ProfileViewModel? = 
 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        profileViewModel = injectedProfileViewModel ?:
-                ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
+        profileViewModel = injectedProfileViewModel
+            ?: ViewModelProvider(requireActivity())[ProfileViewModel::class.java]
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         userDB = UsersDatabase.getDatabase(requireContext())
         val root: View = binding.root
         val sharedPrefs = SharedPreferences(requireContext())
-        val username=sharedPrefs.getLogin().username.toString()
+        val username = sharedPrefs.getLogin().username.toString()
 
-        val registerButton= view?.findViewById<Button>(R.id.listing_button)
         activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.list, ListingFragment::class.java, null)  // Pass the fragment instance here
+            ?.replace(
+                R.id.list,
+                ListingFragment::class.java,
+                null
+            )  // Pass the fragment instance here
             ?.setReorderingAllowed(true)
             ?.addToBackStack("loading listing fragment")
             ?.commit()
+
+        view?.findViewById<Button>(R.id.listing_button)?.setOnClickListener {
+            activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(
+                    R.id.list,
+                    ListingFragment::class.java,
+                    null
+                )  // Pass the fragment instance here
+                ?.setReorderingAllowed(true)
+                ?.addToBackStack("loading listing fragment")
+                ?.commit()
+        }
 
         val logoutButton = binding.buttonLogout
         logoutButton.setOnClickListener {
@@ -59,11 +76,15 @@ class ProfileFragment(private val injectedProfileViewModel: ProfileViewModel? = 
             requireActivity().finish()
         }
 
+
+
+
+
         lifecycleScope.launch {
-            val date=userDB.userDao().getDateByUsername(username)
+            val date = userDB.userDao().getDateByUsername(username)
             Log.d("date", date.toString())
             binding.username.text = username
-            binding.description.text="Member since "+convertUnixDateToString(date)
+            binding.description.text = "Member since " + convertUnixDateToString(date)
         }
 
 

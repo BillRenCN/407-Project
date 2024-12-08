@@ -1,6 +1,7 @@
 package com.cs407.project
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -34,5 +35,17 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    // Method to replace ProfileFragment with EditProfileFragment
+    fun replaceProfileFragmentWithEditProfile() {
+        Log.d("method called", "hi")
+        val editProfileFragment = EditProfileFragment()
+
+        // Perform fragment transaction
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_activity_main, editProfileFragment)
+            .addToBackStack(null)  // Optional: Adds this transaction to the back stack
+            .commit()
     }
 }

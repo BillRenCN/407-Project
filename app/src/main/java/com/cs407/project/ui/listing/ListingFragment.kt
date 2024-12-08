@@ -46,29 +46,29 @@ class ListingFragment : Fragment() {
         _binding = FragmentListingBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.newListingButton.setOnClickListener {
             val intent = Intent(context, AddListingActivity::class.java)
             resultHandler.launch(intent)
         }
 
-        binding.recyclerView.layoutManager =
+        binding.listingRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.recyclerView.adapter = adapter
+        binding.listingRecycler.adapter = adapter
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
             if (isLoading) {
-                binding.textView3.text = getString(R.string.loading_items)
-                binding.textView3.visibility = View.VISIBLE
+                binding.loadingText.text = getString(R.string.loading_items)
+                binding.loadingText.visibility = View.VISIBLE
             }
         })
 
         viewModel.allListings.observe(viewLifecycleOwner, Observer { items ->
-            binding.searchView.setQuery("", false)
+            binding.listingSearch.setQuery("", false)
             if (items.isEmpty()) {
-                binding.textView3.text = getString(R.string.no_items_found)
-                binding.textView3.visibility = View.VISIBLE
+                binding.loadingText.text = getString(R.string.no_items_found)
+                binding.loadingText.visibility = View.VISIBLE
             } else {
-                binding.textView3.visibility = View.GONE
+                binding.loadingText.visibility = View.GONE
             }
         })
 
@@ -89,7 +89,7 @@ class ListingFragment : Fragment() {
 
         }
 
-        binding.searchView.setOnQueryTextListener(SearchTextListener())
+        binding.listingSearch.setOnQueryTextListener(SearchTextListener())
 
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return root

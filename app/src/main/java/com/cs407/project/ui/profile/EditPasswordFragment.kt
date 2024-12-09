@@ -1,7 +1,5 @@
-package com.cs407.project
+package com.cs407.project.ui.profile
 
-import android.app.Application
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,13 +11,11 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.cs407.project.R
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.lib.hash
-import com.cs407.project.ui.profile.ProfileViewModel
-import com.cs407.project.ui.profile.UserState
 import kotlinx.coroutines.launch
 
 class EditPasswordFragment : Fragment() {

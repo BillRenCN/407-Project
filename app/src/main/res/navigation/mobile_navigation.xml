@@ -25,19 +25,19 @@
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.cs407.project.EditProfileFragment"
+        android:name="com.cs407.project.ui.profile.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/editPasswordFragment"
-        android:name="com.cs407.project.EditPasswordFragment"
+        android:name="com.cs407.project.ui.profile.EditPasswordFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_password" />
 
     <fragment
         android:id="@+id/editUsernameFragment"
-        android:name="com.cs407.project.EditUsernameFragment"
+        android:name="com.cs407.project.ui.profile.EditUsernameFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_username" />
 </navigation>

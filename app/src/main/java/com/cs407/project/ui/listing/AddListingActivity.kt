@@ -1,15 +1,17 @@
 package com.cs407.project.ui.listing
 
-import android.app.Activity
-import android.view.View
-import android.content.Intent
 import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
@@ -18,13 +20,18 @@ import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivityPostItemBinding
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 class AddListingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostItemBinding
     private lateinit var database: AppDatabase
-    private var selectedImageUri: Uri? = null // New field for the image URI
     private lateinit var userDB: UsersDatabase
+    private var selectedImageUri: Uri? = null
+
+    // Define the ActivityResultLauncher
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +42,22 @@ class AddListingActivity : AppCompatActivity() {
 
         // Initialize the database
         database = AppDatabase.getDatabase(this)
+        userDB = UsersDatabase.getDatabase(this)
+
+        // Register the ActivityResultLauncher
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                handleImageSelection(uri)
+            } else {
+                Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         // Set up image upload button
         binding.btnUploadImage.setOnClickListener {
             openImagePicker()
         }
 
-        userDB = UsersDatabase.getDatabase(this)
         binding.btnListItem.setOnClickListener {
             if (binding.checkboxAgree.isChecked) {
                 addItemToDatabase()
@@ -51,18 +67,38 @@ class AddListingActivity : AppCompatActivity() {
         }
     }
 
+    // Open the image picker using the new API
     private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, IMAGE_PICK_CODE)
+        imagePickerLauncher.launch("image/*")
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
-            selectedImageUri = data?.data
+    // Handle the image selection result
+    private fun handleImageSelection(uri: Uri) {
+        selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
+        if (selectedImageUri != null) {
             binding.previewImage.setImageURI(selectedImageUri)
             binding.previewImage.visibility = View.VISIBLE
             binding.btnUploadImage.text = "Change Image"
+        } else {
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveImageLocally(uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val fileName = "listing_image_${System.currentTimeMillis()}.jpg"
+            val file = File(filesDir, fileName)
+            val outputStream = FileOutputStream(file)
+
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+
+            file.absolutePath // Return the local file path
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Failed to save image: ${e.message}")
+            null
         }
     }
 
@@ -70,24 +106,21 @@ class AddListingActivity : AppCompatActivity() {
         val title = binding.itemTitle.text.toString()
         val description = binding.itemDescription.text.toString()
         val price = binding.itemPrice.text.toString().toDoubleOrNull() ?: 0.0
-        val userId = 1 // Replace with the actual user ID in a real app
+        val imageUrl = selectedImageUri?.toString() // Retrieve selected image URI
 
         if (title.isNotEmpty() && description.isNotEmpty()) {
-            val newItem = Item(
-                title = title,
-                description = description,
-                price = price,
-                userId = userId,
-                imageUrl = selectedImageUri?.toString() // Save the selected image URI
-            )
-
             val sharedPrefs = SharedPreferences(this)
             val username = sharedPrefs.getLogin().username.toString()
+
             // Insert the item into the database
             lifecycleScope.launch {
                 val userId = userDB.userDao().getIdByUsername(username)
                 val newItem = Item(
-                    title = title, description = description, price = price, userId = userId
+                    title = title,
+                    description = description,
+                    price = price,
+                    userId = userId,
+                    imageUrl = imageUrl
                 )
                 database.itemDao().insertItem(newItem)
                 Toast.makeText(
@@ -102,15 +135,9 @@ class AddListingActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        private const val IMAGE_PICK_CODE = 1000
-    }
-
     // Decimal Limiter Helper
     fun EditText.addDecimalLimiter(maxLimit: Int = 2) {
-
         this.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(s: Editable?) {
                 val str = this@addDecimalLimiter.text!!.toString()
                 if (str.isEmpty()) return
@@ -129,7 +156,6 @@ class AddListingActivity : AppCompatActivity() {
     }
 
     fun EditText.decimalLimiter(string: String, MAX_DECIMAL: Int): String {
-
         var str = string
         if (str[0] == '.') str = "0$str"
         val max = str.length

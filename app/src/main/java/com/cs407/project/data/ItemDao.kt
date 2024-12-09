@@ -15,7 +15,8 @@ data class Item(
     val title: String,
     val description: String,
     val price: Double,
-    val userId: Int
+    val userId: Int,
+   val imageUrl: String? = null // Optional URL for the image
 )
 
 @Dao
@@ -43,5 +44,8 @@ interface ItemDao {
     // Delete an item by its ID
     @Query("DELETE FROM items WHERE id = :itemId")
     suspend fun deleteItemById(itemId: Int)
+
+    @Query("SELECT * FROM items WHERE title LIKE '%' || :query || '%' AND userId = :userId")
+    suspend fun searchItemsByTitleAndUserId(query: String, userId: Int): List<Item>
 
 }

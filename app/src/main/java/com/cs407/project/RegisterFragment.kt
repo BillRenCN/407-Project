@@ -84,6 +84,8 @@ class RegisterFragment : Fragment() {
                     .show()
 
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                val userId = userDao.getUserFromUsername(username)?.userId
+                intent.putExtra("MY_USER_ID", userId)
                 startActivity(intent)
 
                 activity?.finish()

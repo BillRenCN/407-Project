@@ -1,9 +1,6 @@
-package com.cs407.project
+package com.cs407.project.ui.profile
 
-import android.app.Application
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +10,10 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.cs407.project.R
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
-import com.cs407.project.lib.hash
-import com.cs407.project.ui.profile.ProfileViewModel
-import com.cs407.project.ui.profile.UserState
 import kotlinx.coroutines.launch
 
 
@@ -75,8 +69,9 @@ class EditUsernameFragment : Fragment() {
                         requireContext(), "User Already Exists!", Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val username = sharedPrefs.getLogin().username.toString()
-                    val password = sharedPrefs.getLogin().password.toString()
+                    val userInfo = sharedPrefs.getLogin()
+                    val username = userInfo.username.toString()
+                    val password = userInfo.password.toString()
                     userDB.userDao().updateUsername(username, newName)
                     sharedPrefs.saveLogin(newName, password)
                     Toast.makeText(

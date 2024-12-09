@@ -37,6 +37,8 @@ class LauncherActivity : AppCompatActivity() {
                 val isValidUser = validateUser(loginInfo.username, loginInfo.password)
                 if (isValidUser) {
                     val intent = Intent(this@LauncherActivity, MainActivity::class.java)
+                    val userId = userDB.userDao().getUserFromUsername(loginInfo.username)?.userId
+                    intent.putExtra("MY_USER_ID", userId)
                     startActivity(intent)
                     finish()
                 } else {

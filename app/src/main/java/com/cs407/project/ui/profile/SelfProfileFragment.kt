@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.cs407.project.EditProfileFragment
 import com.cs407.project.LauncherActivity
 import com.cs407.project.MainActivity
 import com.cs407.project.R
@@ -20,7 +18,6 @@ import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileBinding
 import com.cs407.project.ui.listing.ListingFragment
-import com.cs407.project.ui.listing.ListingFragment2
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date

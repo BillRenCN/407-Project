@@ -1,10 +1,24 @@
 package com.cs407.project.data
 
 import androidx.room.Dao
+import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.PrimaryKey
 import androidx.room.Query
 
+// For some reason if the entity is separate from the DAO it will fail to compile sometimes
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true) val userId: Int=0,
+    val username: String,
+    val password: String,
+    val email: String,
+    val sales: Int,
+    val rating: Double,
+    val date: Long,
+    val description: String
+)
 
 @Dao
 interface UserDao {
@@ -14,7 +28,7 @@ interface UserDao {
 
     // Get a single item by its ID
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
-    suspend fun getUserByUsername(username: String): User
+    suspend fun getUserFromUsername(username: String): User?
 
     @Query("SELECT * FROM users WHERE userId=:id")
     suspend fun getById(id: Int): User

@@ -35,7 +35,8 @@ class ListingAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val model = allItems.value?.get(position)?: return
+        // Newest items first
+        val model = allItems.value?.get(allItems.value!!.size - position - 1)?: return
 
         holder.itemName.text = model.title
         holder.itemDescription.text = model.description

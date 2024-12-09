@@ -49,6 +49,11 @@ class ListingDetailsActivity : AppCompatActivity() {
             intent.putExtra("USER_ID", userId)
             this.startActivity(intent)
         }
+
+        // Certain actions, like leaving comments or scheduling trades, should be prevented
+        // when the user is the one who posted it.
+        // See message button logic
+        // TODO make sure the posting user can't buy their own things
         binding.btnLeaveComment.setOnClickListener {
             Toast.makeText(this, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
             // You can add the logic for leaving a comment here
@@ -69,6 +74,8 @@ class ListingDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "View All Reviews clicked", Toast.LENGTH_SHORT).show()
             // You can add the logic for viewing reviews here
         }
+
+        supportActionBar?.hide()
     }
 
 

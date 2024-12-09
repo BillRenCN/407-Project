@@ -1,9 +1,7 @@
 package com.cs407.project.ui.listing
 
 import android.net.Uri
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -45,13 +43,14 @@ class AddListingActivity : AppCompatActivity() {
         userDB = UsersDatabase.getDatabase(this)
 
         // Register the ActivityResultLauncher
-        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            if (uri != null) {
-                handleImageSelection(uri)
-            } else {
-                Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+        imagePickerLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if (uri != null) {
+                    handleImageSelection(uri)
+                } else {
+                    Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
 
         // Set up image upload button
         binding.btnUploadImage.setOnClickListener {
@@ -65,6 +64,8 @@ class AddListingActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show()
             }
         }
+
+        supportActionBar?.hide()
     }
 
     // Open the image picker using the new API
@@ -124,9 +125,7 @@ class AddListingActivity : AppCompatActivity() {
                 )
                 database.itemDao().insertItem(newItem)
                 Toast.makeText(
-                    this@AddListingActivity,
-                    "Item posted successfully",
-                    Toast.LENGTH_SHORT
+                    this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT
                 ).show()
                 finish() // Close the activity
             }

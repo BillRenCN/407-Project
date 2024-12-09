@@ -13,18 +13,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.cs407.project.R
-import com.cs407.project.data.Review
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.cs407.project.data.ReviewDataHelper
 import com.cs407.project.data.UsersDatabase
 import java.util.Calendar
 import java.util.Locale
-import com.cs407.project.data.ReviewDatabase
 import com.cs407.project.data.ItemDao
+import com.cs407.project.data.Review
+import com.cs407.project.data.ReviewDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
@@ -32,7 +34,6 @@ class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var dateEditText: EditText
     private lateinit var mDestinationLatLng: LatLng
     private var isLocationConfirmed: Boolean = false
-    private lateinit var reviewDB: ReviewDatabase
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
 
         locationEditText = findViewById(R.id.editTextText2)
         dateEditText = findViewById(R.id.editTextText)
+        testDatabase()
 
         dateEditText.setOnClickListener {
             showDateTimePicker()
@@ -78,14 +80,39 @@ class ScheduleTradeActivity : AppCompatActivity() {
                     val intent = intent
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
                     val userId = intent.getIntExtra("USER_ID", -1)
-                    val reviewDao = reviewDB.reviewDao()
+                    //val reviewDao = reviewDB.reviewDao()
                     //val sellerID = ItemDao.
-                    //reviewDao.insertReview(Review())
+                    //reviewDao.insertReview(com.cs407.project.data.Review())
                     Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun testDatabase() {
+        val db = ReviewDatabase.getDatabase(this)
+        val reviewDao = db.reviewDao()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            // Insert hardcoded data
+            val review = Review(
+                user = "Alice",
+                reviewer = "Bob",
+                date = "2024-12-10",
+                message = "Great product and service!",
+                iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
+            )
+            reviewDao.insertReview(review)
+
+            // Fetch the inserted review
+            val fetchedReview = reviewDao.getReview("Alice", "Bob")
+            println("Fetched Review: $fetchedReview")
+
+            // Fetch all reviews
+            val allReviews = reviewDao.getAllReviews()
+            println("All Reviews: $allReviews")
         }
     }
 

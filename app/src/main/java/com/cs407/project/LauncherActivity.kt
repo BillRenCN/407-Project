@@ -19,10 +19,10 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
 
-        sharedPrefs = SharedPreferences(this)
+        sharedPrefs = SharedPreferences()
         userDB = UsersDatabase.getDatabase(this)
 
-        val loginInfo = sharedPrefs.getLogin()
+        val loginInfo = sharedPrefs.getLogin(this)
 
         Toast.makeText(
             this@LauncherActivity,
@@ -37,10 +37,12 @@ class LauncherActivity : AppCompatActivity() {
                 val isValidUser = validateUser(loginInfo.username, loginInfo.password)
                 if (isValidUser) {
                     val intent = Intent(this@LauncherActivity, MainActivity::class.java)
+                    val userId = userDB.userDao().getUserFromUsername(loginInfo.username)?.userId
+                    intent.putExtra("MY_USER_ID", userId)
                     startActivity(intent)
                     finish()
                 } else {
-                    sharedPrefs.saveLogin(null, null)
+                    sharedPrefs.saveLogin(null, null, this@LauncherActivity)
                     startLoginActivity()
                 }
             }

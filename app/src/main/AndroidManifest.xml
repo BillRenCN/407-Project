@@ -16,9 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.profile.ProfileActivity"
-            android:exported="false" />
+        <activity android:name=".ui.messages.MessagesActivity" />
+        <activity android:name=".ui.profile.ProfileActivity" />
         <activity
             android:name=".LauncherActivity"
             android:exported="true">
@@ -31,7 +30,7 @@
         <activity android:name=".LoginRegisterActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ScheduleTradeActivity" />
         <activity
             android:name=".ui.listing.ListingDetailsActivity"
@@ -39,6 +38,9 @@
         <activity
             android:name=".ui.listing.AddListingActivity"
             android:label="@string/title_post_item" />
+        <activity android:name=".ui.trade_feedback.LeaveCommentActivity" />
+        <activity android:name=".ui.trade_feedback.ScheduleTradeActivity" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

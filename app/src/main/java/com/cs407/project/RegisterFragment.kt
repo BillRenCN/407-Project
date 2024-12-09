@@ -78,12 +78,14 @@ class RegisterFragment : Fragment() {
                 }
 
                 userDao.insertUser(User(0, username, hash(password), email, 0, 0.0, System.currentTimeMillis()/1000, "No description"))
-                val sharedPrefs = SharedPreferences(requireContext())
-                sharedPrefs.saveLogin(username, password)
+                val sharedPrefs = SharedPreferences()
+                sharedPrefs.saveLogin(username, password, requireContext())
                 Toast.makeText(requireContext(), "Registration Successful", Toast.LENGTH_SHORT)
                     .show()
 
                 val intent = Intent(requireContext(), MainActivity::class.java)
+                val userId = userDao.getUserFromUsername(username)?.userId
+                intent.putExtra("MY_USER_ID", userId)
                 startActivity(intent)
 
                 activity?.finish()

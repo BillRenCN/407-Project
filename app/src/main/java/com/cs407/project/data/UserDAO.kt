@@ -1,10 +1,24 @@
 package com.cs407.project.data
 
 import androidx.room.Dao
+import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.PrimaryKey
 import androidx.room.Query
-import com.cs407.project.data.User
+
+// For some reason if the entity is separate from the DAO it will fail to compile sometimes
+@Entity(tableName = "users")
+data class User(
+    @PrimaryKey(autoGenerate = true) val userId: Int=0,
+    val username: String,
+    val password: String,
+    val email: String,
+    val sales: Int,
+    val rating: Double,
+    val date: Long,
+    val description: String
+)
 
 @Dao
 interface UserDao {
@@ -14,10 +28,10 @@ interface UserDao {
 
     // Get a single item by its ID
     @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
-    suspend fun getItemById(username: String): User?
+    suspend fun getUserFromUsername(username: String): User?
 
     @Query("SELECT * FROM users WHERE userId=:id")
-    suspend fun getById(id: Int): User?
+    suspend fun getById(id: Int): User
 
     @Query("DELETE FROM users WHERE userId=:userId")
     suspend fun deleteUser(userId: Int)
@@ -35,4 +49,17 @@ interface UserDao {
 
     @Query("SELECT password FROM users WHERE username = :username LIMIT 1")
     suspend fun getPasswordHashByUsername(username: String): String?
+
+    @Query("SELECT date FROM users WHERE username = :username LIMIT 1")
+    suspend fun getDateByUsername(username: String): Long
+
+    @Query("SELECT userId FROM users WHERE username = :username LIMIT 1")
+    suspend fun getIdByUsername(username: String): Int
+
+    @Query("UPDATE users SET password = :newPassword WHERE username = :username")
+    suspend fun updatePasswordByUsername(username: String, newPassword: String): Int
+
+    @Query("UPDATE users SET username = :newUsername WHERE username = :currentUsername")
+    suspend fun updateUsername(currentUsername: String, newUsername: String): Int
+
 }

@@ -65,8 +65,8 @@ class LoginFragment : Fragment() {
                 }
 
                 if (hash(password) == realPasswordHash) {
-                    val sharedPrefs = SharedPreferences(requireContext())
-                    sharedPrefs.saveLogin(username, password)
+                    val sharedPrefs = SharedPreferences()
+                    sharedPrefs.saveLogin(username, password, requireContext())
 
                     Toast.makeText(requireContext(), "Login Success!", Toast.LENGTH_SHORT).show()
 

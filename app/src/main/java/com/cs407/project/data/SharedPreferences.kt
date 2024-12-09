@@ -1,24 +1,21 @@
 package com.cs407.project.data
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class SharedPreferences(context: Context) {
+class SharedPreferences() {
 
     data class UserPass(val username: String?, val password: String?)
 
-    private val preferences: SharedPreferences =
-        context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
-
-    fun saveLogin(username: String?, password: String?) {
-        preferences.edit {
+    fun saveLogin(username: String?, password: String?, context: Context) {
+        context.getSharedPreferences("preferences", Context.MODE_PRIVATE).edit {
             putString("username", username)
             putString("password", password)
         }
     }
 
-    fun getLogin(): UserPass {
+    fun getLogin(context: Context): UserPass {
+        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val username = preferences.getString("username", null)
         val password = preferences.getString("password", null)
         return UserPass(username, password)

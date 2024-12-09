@@ -52,5 +52,26 @@ abstract class UsersDatabase : RoomDatabase() {
     }
 }
 
+// Third database: Messages
+@Database(entities = [Message::class], version = 1, exportSchema = false)
+abstract class MessagesDatabase : RoomDatabase() {
+    abstract fun messagesDao(): MessagesDao
 
+    companion object {
+        @Volatile
+        private var INSTANCE: MessagesDatabase? = null
+
+        fun getDatabase(context: Context): MessagesDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MessagesDatabase::class.java,
+                    "messages_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
 

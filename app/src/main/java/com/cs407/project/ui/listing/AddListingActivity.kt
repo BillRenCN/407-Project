@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
+import com.cs407.project.data.SharedPreferences
+import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivityPostItemBinding
 import kotlinx.coroutines.launch
 
@@ -22,6 +24,7 @@ class AddListingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPostItemBinding
     private lateinit var database: AppDatabase
     private var selectedImageUri: Uri? = null // New field for the image URI
+    private lateinit var userDB: UsersDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +41,7 @@ class AddListingActivity : AppCompatActivity() {
             openImagePicker()
         }
 
+        userDB = UsersDatabase.getDatabase(this)
         binding.btnListItem.setOnClickListener {
             if (binding.checkboxAgree.isChecked) {
                 addItemToDatabase()
@@ -77,9 +81,20 @@ class AddListingActivity : AppCompatActivity() {
                 imageUrl = selectedImageUri?.toString() // Save the selected image URI
             )
 
+            val sharedPrefs = SharedPreferences()
+            val username = sharedPrefs.getLogin(this).username.toString()
+            // Insert the item into the database
             lifecycleScope.launch {
+                val userId = userDB.userDao().getIdByUsername(username)
+                val newItem = Item(
+                    title = title, description = description, price = price, userId = userId
+                )
                 database.itemDao().insertItem(newItem)
-                Toast.makeText(this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@AddListingActivity,
+                    "Item posted successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish() // Close the activity
             }
         } else {
@@ -122,6 +137,7 @@ class AddListingActivity : AppCompatActivity() {
         var t: Char
 
         val decimalCount = str.count { ".".contains(it) }
+
         if (decimalCount > 1) return str.dropLast(1)
 
         while (i < max) {

@@ -1,5 +1,7 @@
-package com.cs407.project
+package com.cs407.project.ui.trade_feedback
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
@@ -10,11 +12,13 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.cs407.project.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.Calendar
 import java.util.Locale
 
 class ScheduleTradeActivity : AppCompatActivity() {
@@ -22,6 +26,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var locationEditText: EditText
     private lateinit var dateEditText: EditText
     private lateinit var mDestinationLatLng: LatLng
+    private var isLocationConfirmed: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +38,14 @@ class ScheduleTradeActivity : AppCompatActivity() {
         locationEditText = findViewById(R.id.editTextText2)
         dateEditText = findViewById(R.id.editTextText)
 
+        dateEditText.setOnClickListener {
+            showDateTimePicker()
+        }
+
         mapFragment?.getMapAsync { googleMap ->
             runOnUiThread {
                 mMap = googleMap
+                mDestinationLatLng = LatLng(43.0753, -89.4034)
                 setLocationMarker(mDestinationLatLng, "Bascom Hall")
             }
         }
@@ -55,6 +65,28 @@ class ScheduleTradeActivity : AppCompatActivity() {
                 }
             }
         }
+
+        findViewById<Button>(R.id.confirm_button).setOnClickListener {
+            runOnUiThread {
+                if (isLocationConfirmed) {
+                    Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun showDateTimePicker() {
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(this, { _, year, month, dayOfMonth ->
+            val timePickerDialog = TimePickerDialog(this, { _, hourOfDay, minute ->
+                val selectedDateTime = "$dayOfMonth/${month + 1}/$year $hourOfDay:$minute"
+                dateEditText.setText(selectedDateTime)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+            timePickerDialog.show()
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        datePickerDialog.show()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -68,9 +100,10 @@ class ScheduleTradeActivity : AppCompatActivity() {
                         Log.d("debug", "2")
                         val address = addressList[0]
                         val latLng = LatLng(address.latitude, address.longitude)
-                        Log.d("MainActivity", "Location found: ${address.latitude}, ${address.longitude}")
+                        Log.d("MainActivity", "Location found: \${address.latitude}, \${address.longitude}")
 
                         setLocationMarker(latLng, "locationName")
+                        isLocationConfirmed = true
                     } else {
                         Toast.makeText(this@ScheduleTradeActivity, "Location not found", Toast.LENGTH_SHORT).show()
                     }

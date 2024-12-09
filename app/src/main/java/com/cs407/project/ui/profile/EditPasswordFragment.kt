@@ -60,13 +60,13 @@ class EditPasswordFragment : Fragment() {
 
             if (password1 == password2) {
                 val hashedPassword = hash(password1)
-                val sharedPrefs = SharedPreferences(requireContext())
-                val username = sharedPrefs.getLogin().username.toString()
+                val sharedPrefs = SharedPreferences()
+                val username = sharedPrefs.getLogin(requireContext()).username.toString()
 
                 lifecycleScope.launch {
                     try {
                         userDB.userDao().updatePasswordByUsername(username, hashedPassword)
-                        sharedPrefs.saveLogin(username, hashedPassword)
+                        sharedPrefs.saveLogin(username, hashedPassword, requireContext())
 
                         Toast.makeText(
                             requireContext(), "Password Updated!", Toast.LENGTH_SHORT

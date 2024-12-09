@@ -22,8 +22,8 @@ interface MessagesDao {
     suspend fun insertItem(message: Message): Long
 
     // Get all messages by its composite userId keys
-    @Query("SELECT * FROM messages WHERE senderId = :senderId AND receiverId = :receiverId")
-    suspend fun getMessagesBySenderAndReceiver(senderId: Int, receiverId: Int): List<Message>
+    @Query("SELECT * FROM messages WHERE (senderId = :user1Id AND receiverId = :user2Id) OR (senderId = :user2Id AND receiverId = :user1Id)")
+    suspend fun getMessagesByParticipants(user1Id: Int, user2Id: Int): List<Message>
 
     // No deleting is intentional
 }

@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MessagesActivity">
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".ui.messages.MessagesActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" >
+        android:layout_weight="1">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="96dp"
+        android:id="@+id/messageBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/colorSurfaceDim"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/messageEditText"
             style="@style/Widget.Material3.TextInputEditText.FilledBox"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:breakStrategy="simple"
             android:ems="10"
             android:gravity="start|top"
             android:hint="Send a message..."
+            android:imeOptions="actionSend"
             android:importantForAutofill="no"
-            android:inputType="textMultiLine" />
+            android:inputType="text|textLongMessage|textAutoCorrect|textMultiLine"
+            android:textColorHint="?android:attr/textColorSecondary" />
 
         <ImageButton
             android:id="@+id/imageButton"
+            style="@style/Widget.AppCompat.ImageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_weight="1"
+            android:adjustViewBounds="false"
             android:background="@android:color/transparent"
+            android:clickable="true"
+            android:contentDescription="Send message"
+            android:cropToPadding="false"
+            android:focusable="true"
             app:srcCompat="@drawable/baseline_send_24"
             app:tint="@color/black" />
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

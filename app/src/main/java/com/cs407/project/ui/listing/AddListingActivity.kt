@@ -5,14 +5,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
 import com.cs407.project.data.SharedPreferences
-import com.cs407.project.databinding.ActivityPostItemBinding
 import com.cs407.project.data.UsersDatabase
+import com.cs407.project.databinding.ActivityPostItemBinding
 import kotlinx.coroutines.launch
 
 class AddListingActivity : AppCompatActivity() {
@@ -30,7 +29,7 @@ class AddListingActivity : AppCompatActivity() {
 
         // Initialize the database
         database = AppDatabase.getDatabase(this)
-        userDB=UsersDatabase.getDatabase(this)
+        userDB = UsersDatabase.getDatabase(this)
         binding.btnListItem.setOnClickListener {
             if (binding.checkboxAgree.isChecked) {
                 addItemToDatabase()
@@ -47,19 +46,20 @@ class AddListingActivity : AppCompatActivity() {
         //val userId = 1 // Replace with the actual user ID in a real app
 
         if (title.isNotEmpty() && description.isNotEmpty()) {
-            val sharedPrefs = SharedPreferences(this)
-            val username=sharedPrefs.getLogin().username.toString()
+            val sharedPrefs = SharedPreferences()
+            val username = sharedPrefs.getLogin(this).username.toString()
             // Insert the item into the database
             lifecycleScope.launch {
-                val userId=userDB.userDao().getIdByUsername(username)
+                val userId = userDB.userDao().getIdByUsername(username)
                 val newItem = Item(
-                    title = title,
-                    description = description,
-                    price = price,
-                    userId = userId
+                    title = title, description = description, price = price, userId = userId
                 )
                 database.itemDao().insertItem(newItem)
-                Toast.makeText(this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@AddListingActivity,
+                    "Item posted successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish() // Close the activity
             }
         } else {
@@ -108,10 +108,9 @@ class AddListingActivity : AppCompatActivity() {
         var decimal = 0
         var t: Char
 
-        val decimalCount = str.count{ ".".contains(it) }
+        val decimalCount = str.count { ".".contains(it) }
 
-        if (decimalCount > 1)
-            return str.dropLast(1)
+        if (decimalCount > 1) return str.dropLast(1)
 
         while (i < max) {
             t = str[i]
@@ -121,8 +120,7 @@ class AddListingActivity : AppCompatActivity() {
                 after = true
             } else {
                 decimal++
-                if (decimal > MAX_DECIMAL)
-                    return rFinal
+                if (decimal > MAX_DECIMAL) return rFinal
             }
             rFinal += t
             i++

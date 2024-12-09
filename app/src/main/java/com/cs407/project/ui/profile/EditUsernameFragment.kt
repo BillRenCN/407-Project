@@ -50,7 +50,7 @@ class EditUsernameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState) // Always call the parent method
 
-        val sharedPrefs = SharedPreferences(requireContext())
+        val sharedPrefs = SharedPreferences()
         saveButton.setOnClickListener {
             // Fetch the value dynamically when the button is clicked
             val newName = newUsername.text.toString().trim()
@@ -69,10 +69,11 @@ class EditUsernameFragment : Fragment() {
                         requireContext(), "User Already Exists!", Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    val username = sharedPrefs.getLogin().username.toString()
-                    val password = sharedPrefs.getLogin().password.toString()
+                    val userInfo = sharedPrefs.getLogin(requireContext())
+                    val username = userInfo.username.toString()
+                    val password = userInfo.password.toString()
                     userDB.userDao().updateUsername(username, newName)
-                    sharedPrefs.saveLogin(newName, password)
+                    sharedPrefs.saveLogin(newName, password, requireContext())
                     Toast.makeText(
                         requireContext(), "Username Updated!", Toast.LENGTH_SHORT
                     ).show()

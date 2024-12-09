@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +16,18 @@ import com.cs407.project.data.Item
 import com.cs407.project.lib.displayImage
 import java.text.NumberFormat
 import java.util.Currency
+import com.cs407.project.ui.listing.ListingViewModel
+import com.cs407.project.ui.profile.ListingViewModel2
 
 @SuppressLint("NotifyDataSetChanged")
-class ListingAdapter(
+class SelfListingAdapter(
     private val allItems: LiveData<List<Item>>,
     lifecycleOwner: LifecycleOwner,
-) : RecyclerView.Adapter<ListingAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SelfListingAdapter.ViewHolder>() {
+
+    private lateinit var viewModel2: ListingViewModel2
+    private lateinit var viewModel: ListingViewModel
+    private lateinit var adapter: SelfListingAdapter
 
     init {
         allItems.observe(lifecycleOwner) {
@@ -47,9 +54,11 @@ class ListingAdapter(
 
         holder.itemView.setOnClickListener {
 
-            val intent = Intent(holder.itemView.context, ListingDetailsActivity::class.java)
+            val intent = Intent(holder.itemView.context, SelfListingDetailsActivity::class.java)
             intent.putExtra("ITEM_ID", model.id)
             holder.itemView.context.startActivity(intent)
+
+
         }
     }
 

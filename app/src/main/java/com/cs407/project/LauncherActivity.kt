@@ -19,10 +19,10 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
 
-        sharedPrefs = SharedPreferences()
+        sharedPrefs = SharedPreferences(this)
         userDB = UsersDatabase.getDatabase(this)
 
-        val loginInfo = sharedPrefs.getLogin(this)
+        val loginInfo = sharedPrefs.getLogin()
 
         Toast.makeText(
             this@LauncherActivity,
@@ -42,7 +42,7 @@ class LauncherActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    sharedPrefs.saveLogin(null, null, this@LauncherActivity)
+                    sharedPrefs.saveLogin(null, null)
                     startLoginActivity()
                 }
             }

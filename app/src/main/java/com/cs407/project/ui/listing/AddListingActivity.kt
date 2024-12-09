@@ -81,8 +81,8 @@ class AddListingActivity : AppCompatActivity() {
                 imageUrl = selectedImageUri?.toString() // Save the selected image URI
             )
 
-            val sharedPrefs = SharedPreferences()
-            val username = sharedPrefs.getLogin(this).username.toString()
+            val sharedPrefs = SharedPreferences(this)
+            val username = sharedPrefs.getLogin().username.toString()
             // Insert the item into the database
             lifecycleScope.launch {
                 val userId = userDB.userDao().getIdByUsername(username)
@@ -108,11 +108,14 @@ class AddListingActivity : AppCompatActivity() {
 
     // Decimal Limiter Helper
     fun EditText.addDecimalLimiter(maxLimit: Int = 2) {
+
         this.addTextChangedListener(object : TextWatcher {
+
             override fun afterTextChanged(s: Editable?) {
                 val str = this@addDecimalLimiter.text!!.toString()
                 if (str.isEmpty()) return
                 val str2 = decimalLimiter(str, maxLimit)
+
                 if (str2 != str) {
                     this@addDecimalLimiter.setText(str2)
                     val pos = this@addDecimalLimiter.text!!.length
@@ -126,9 +129,11 @@ class AddListingActivity : AppCompatActivity() {
     }
 
     fun EditText.decimalLimiter(string: String, MAX_DECIMAL: Int): String {
+
         var str = string
         if (str[0] == '.') str = "0$str"
         val max = str.length
+
         var rFinal = ""
         var after = false
         var i = 0

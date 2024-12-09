@@ -126,8 +126,8 @@ class ListingFragment2 : Fragment() {
 
     private fun getUserIdFromPrefs(): Int {
         // Fetch userId from SharedPreferences
-        val sharedPrefs = SharedPreferences()
-        val username = sharedPrefs.getLogin(requireContext()).username.toString()
+        val sharedPrefs = SharedPreferences(requireContext())
+        val username = sharedPrefs.getLogin().username.toString()
 
         // Query the UserDAO to get the userId based on the username
         val userDao = userDB.userDao()

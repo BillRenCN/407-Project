@@ -46,8 +46,8 @@ class AddListingActivity : AppCompatActivity() {
         //val userId = 1 // Replace with the actual user ID in a real app
 
         if (title.isNotEmpty() && description.isNotEmpty()) {
-            val sharedPrefs = SharedPreferences()
-            val username = sharedPrefs.getLogin(this).username.toString()
+            val sharedPrefs = SharedPreferences(this)
+            val username = sharedPrefs.getLogin().username.toString()
             // Insert the item into the database
             lifecycleScope.launch {
                 val userId = userDB.userDao().getIdByUsername(username)

@@ -41,8 +41,8 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         userDB = UsersDatabase.getDatabase(requireContext())
         val root: View = binding.root
-        val sharedPrefs = SharedPreferences()
-        val username = sharedPrefs.getLogin(requireContext()).username.toString()
+        val sharedPrefs = SharedPreferences(requireContext())
+        val username = sharedPrefs.getLogin().username.toString()
 
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(
@@ -68,7 +68,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
 
         val logoutButton = binding.buttonLogout
         logoutButton.setOnClickListener {
-            SharedPreferences().saveLogin(null, null, requireContext())
+            SharedPreferences(requireContext()).saveLogin(null, null)
             val intent = Intent(requireContext(), LauncherActivity::class.java)
             startActivity(intent)
             requireActivity().finish()

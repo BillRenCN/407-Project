@@ -94,7 +94,7 @@ class ListingDetailsActivity : AppCompatActivity() {
             binding.messageButton.setOnClickListener {
                 lifecycleScope.launch {
                     val myUserId = usersDatabase.userDao()
-                        .getUserFromUsername(SharedPreferences().getLogin(this@ListingDetailsActivity).username!!)!!.userId
+                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     if (item.userId == myUserId) {
                         Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)

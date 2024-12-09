@@ -36,7 +36,6 @@ class ScheduleTradeActivity : AppCompatActivity() {
         mapFragment?.getMapAsync { googleMap ->
             runOnUiThread {
                 mMap = googleMap
-                mDestinationLatLng = LatLng(43.0753, -89.4034)
                 setLocationMarker(mDestinationLatLng, "Bascom Hall")
             }
         }

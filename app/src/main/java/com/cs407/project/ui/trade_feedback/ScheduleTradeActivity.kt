@@ -13,13 +13,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.cs407.project.R
+import com.cs407.project.data.Review
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.cs407.project.data.ReviewDataHelper
+import com.cs407.project.data.UsersDatabase
 import java.util.Calendar
 import java.util.Locale
+import com.cs407.project.data.ReviewDatabase
+import com.cs407.project.data.ItemDao
 
 class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
@@ -27,6 +32,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var dateEditText: EditText
     private lateinit var mDestinationLatLng: LatLng
     private var isLocationConfirmed: Boolean = false
+    private lateinit var reviewDB: ReviewDatabase
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +75,12 @@ class ScheduleTradeActivity : AppCompatActivity() {
         findViewById<Button>(R.id.confirm_button).setOnClickListener {
             runOnUiThread {
                 if (isLocationConfirmed) {
+                    val intent = intent
+                    val itemId = intent.getIntExtra("ITEM_ID", -1)
+                    val userId = intent.getIntExtra("USER_ID", -1)
+                    val reviewDao = reviewDB.reviewDao()
+                    //val sellerID = ItemDao.
+                    //reviewDao.insertReview(Review())
                     Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()

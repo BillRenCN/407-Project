@@ -59,7 +59,8 @@ class ListingDetailsActivity : AppCompatActivity() {
 
         binding.btnScheduleTrade.setOnClickListener {
             val intent = Intent(this, ScheduleTradeActivity::class.java)
-            intent.putExtra("ITEM_ID", userId)
+            intent.putExtra("ITEM_ID", itemId)
+            intent.putExtra("USER_ID", userId)
             Toast.makeText(this, "ScheduleTrade clicked", Toast.LENGTH_SHORT).show()
             this.startActivity(intent)
         }

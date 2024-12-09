@@ -15,7 +15,8 @@ data class Item(
     val title: String,
     val description: String,
     val price: Double,
-    val userId: Int
+    val userId: Int,
+   val imageUrl: String? = null // Optional URL for the image
 )
 
 @Dao

@@ -64,6 +64,7 @@ android {
 dependencies {
     // Room dependencies
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.swiperefreshlayout)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.room.ktx) // Add this line
 

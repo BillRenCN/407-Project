@@ -22,7 +22,7 @@ import com.cs407.project.databinding.FragmentListingBinding
 import com.cs407.project.ui.listing.AddListingActivity
 import com.cs407.project.ui.listing.ListingAdapter
 import com.cs407.project.ui.listing.ListingViewModel
-import com.cs407.project.ui.listing.ListingViewModel2
+import com.cs407.project.ui.listing.SelfListingAdapter
 import kotlinx.coroutines.launch
 
 class ListingFragment2 : Fragment() {
@@ -33,7 +33,7 @@ class ListingFragment2 : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel2: ListingViewModel2
     private lateinit var viewModel: ListingViewModel
-    private lateinit var adapter: ListingAdapter
+    private lateinit var adapter: SelfListingAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     val resultHandler =
@@ -68,7 +68,7 @@ class ListingFragment2 : Fragment() {
         viewModel.refreshListings(userId)
 
         // Initialize the adapter with filteredListings
-        this.adapter = ListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
+        this.adapter = SelfListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
 
         _binding = FragmentListingBinding.inflate(inflater, container, false)
         val root: View = binding.root

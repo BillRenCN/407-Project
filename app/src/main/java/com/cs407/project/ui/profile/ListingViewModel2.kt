@@ -1,4 +1,4 @@
-package com.cs407.project.ui.listing
+package com.cs407.project.ui.profile
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
-import com.cs407.project.data.SharedPreferences
 import kotlinx.coroutines.launch
 
 class ListingViewModel2(application: Application) : AndroidViewModel(application) {

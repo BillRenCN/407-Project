@@ -24,6 +24,12 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
+        android:id="@+id/navigation_messages"
+        android:name="com.cs407.project.ui.messages.MessageListFragment"
+        android:label="Messages"
+        tools:layout="@layout/fragment_message_list" />
+
+    <fragment
         android:id="@+id/editProfileFragment"
         android:name="com.cs407.project.ui.profile.EditProfileFragment"
         android:label="Edit Profile"

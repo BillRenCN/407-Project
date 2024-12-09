@@ -43,7 +43,7 @@ class ListingFragment : Fragment() {
 
         this.adapter = ListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
 
-        _binding = FragmentListingBinding.inflate(inflater, container, false)
+        _binding = FragmentListingBinding.inflate(layoutInflater)
         val root: View = binding.root
 
         binding.newListingButton.setOnClickListener {

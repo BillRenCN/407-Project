@@ -1,6 +1,7 @@
 package com.cs407.project.ui.listing
 
 import android.content.Context
+import android.net.Uri
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -34,7 +35,6 @@ class ListingDetailsActivity : AppCompatActivity() {
         binding = ActivityItemDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize the database
         database = AppDatabase.getDatabase(this)
         usersDatabase = UsersDatabase.getDatabase(this)
 
@@ -49,6 +49,11 @@ class ListingDetailsActivity : AppCompatActivity() {
             intent.putExtra("USER_ID", userId)
             this.startActivity(intent)
         }
+
+        // Certain actions, like leaving comments or scheduling trades, should be prevented
+        // when the user is the one who posted it.
+        // See message button logic
+        // TODO make sure the posting user can't buy their own things
         binding.btnLeaveComment.setOnClickListener {
             Toast.makeText(this, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
             // You can add the logic for leaving a comment here
@@ -69,7 +74,10 @@ class ListingDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "View All Reviews clicked", Toast.LENGTH_SHORT).show()
             // You can add the logic for viewing reviews here
         }
+
+        supportActionBar?.hide()
     }
+
 
     private fun loadItemDetails(itemId: Int, context: Context) {
         lifecycleScope.launch {
@@ -81,6 +89,8 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
             val user = usersDatabase.userDao().getById(item.userId)
             userId = user.userId
+
+            // Set item details
             binding.itemName.text = item.title
             val priceFormat = NumberFormat.getCurrencyInstance()
             priceFormat.currency = Currency.getInstance("USD")
@@ -92,14 +102,15 @@ class ListingDetailsActivity : AppCompatActivity() {
                 append("/5")
             }
             binding.sellerRatingSales.text = getString(R.string.rating_sales, ratingStr, user.sales)
+
+            // Message button logic
             binding.messageButton.setOnClickListener {
                 lifecycleScope.launch {
                     val myUserId = usersDatabase.userDao()
                         .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     if (item.userId == myUserId) {
-                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG).show()
                         return@launch
                     }
                     val intent = Intent(context, MessagesActivity::class.java)
@@ -108,11 +119,26 @@ class ListingDetailsActivity : AppCompatActivity() {
                     intent.putExtra("USER_NAME", user.username)
                     context.startActivity(intent)
                 }
-
             }
-            displayImage(user.userId, binding.sellerImage, "user")
-            displayImage(item.id, binding.itemImage, "listing")
-        }
 
+            // Display seller image
+            displayImage(user.userId, binding.sellerImage, "user")
+
+            // Display item image
+            try {
+                if (!item.imageUrl.isNullOrEmpty()) {
+                    // Safely handle both app-local and content URIs
+                    val uri = Uri.parse(item.imageUrl)
+                    binding.itemImage.setImageURI(uri)
+                } else {
+                    // Fallback to displayImage function or placeholder
+                    displayImage(item.id, binding.itemImage, "listing")
+                }
+            } catch (e: SecurityException) {
+                Log.e("ListingDetailsActivity", "Failed to load image: ${e.message}")
+                // Handle gracefully, e.g., show a placeholder image
+                displayImage(item.id, binding.itemImage, "listing")
+            }
+        }
     }
 }

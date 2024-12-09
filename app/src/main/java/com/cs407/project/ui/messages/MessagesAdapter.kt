@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
 import com.cs407.project.data.Message
+import java.text.SimpleDateFormat
 
 class MessagesAdapter(
     private val messages: List<Message>, private val myUserId: Int
@@ -41,6 +43,11 @@ class MessagesAdapter(
             holder.itemView.context.getColorStateList(com.google.android.material.R.color.design_default_color_primary)
         } else {
             holder.itemView.context.getColorStateList(R.color.black)
+        }
+
+        holder.itemView.setOnClickListener {
+            val dateTime = SimpleDateFormat.getDateTimeInstance().format(model.timestamp)
+            Toast.makeText(it.context, "Message sent at $dateTime", Toast.LENGTH_LONG).show()
         }
     }
 

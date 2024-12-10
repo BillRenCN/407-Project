@@ -38,7 +38,7 @@ class ProfileActivity : AppCompatActivity() {
             binding.name.text = user.username
             binding.rating.rating = user.rating.toFloat()
             binding.description.text = user.description
-            displayImage(user.userId, binding.image, "user")
+            displayImage(binding.image, user.imageUrl)
         }
     }
 

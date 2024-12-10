@@ -44,7 +44,7 @@ class ListingAdapter(
         val priceFormat = NumberFormat.getCurrencyInstance()
         priceFormat.currency = Currency.getInstance("USD")
         holder.itemPrice.text = priceFormat.format(model.price)
-        displayImage(model.id, holder.imageView, "listing")
+        displayImage(holder.imageView, model.imageUrl)
 
         holder.itemView.setOnClickListener {
 

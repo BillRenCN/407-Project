@@ -1,7 +1,6 @@
 package com.cs407.project.ui.listing
 
 import android.content.Context
-import android.net.Uri
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -121,32 +120,10 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
 
             // Display seller image
-            try {
-                if (!user.imageUrl.isNullOrEmpty()) {
-                    val sellerUri = Uri.parse(user.imageUrl)
-                    binding.sellerImage.setImageURI(sellerUri) // Load seller image from URI
-                } else {
-                    // Fallback to default placeholder
-                    binding.sellerImage.setImageResource(R.drawable.ic_profile_placeholder)
-                }
-            } catch (e: Exception) {
-                Log.e("ListingDetailsActivity", "Failed to load seller image: ${e.message}")
-                binding.sellerImage.setImageResource(R.drawable.ic_profile_placeholder)
-            }
+            displayImage(binding.sellerImage, user.imageUrl)
 
             // Display item image
-            try {
-                if (!item.imageUrl.isNullOrEmpty()) {
-                    val itemUri = Uri.parse(item.imageUrl)
-                    binding.itemImage.setImageURI(itemUri)
-                } else {
-                    // Fallback to displayImage function or placeholder
-                    displayImage(item.id, binding.itemImage, "listing")
-                }
-            } catch (e: SecurityException) {
-                Log.e("ListingDetailsActivity", "Failed to load item image: ${e.message}")
-                displayImage(item.id, binding.itemImage, "listing")
-            }
+            displayImage(binding.itemImage, item.imageUrl)
         }
     }
 

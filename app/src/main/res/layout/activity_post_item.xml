@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Image Upload Section -->
+        <FrameLayout
+            android:id="@+id/image_upload_section"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/dotted_background">
+
+            <ImageView
+                android:id="@+id/preview_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Preview Image"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_upload_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/purple_500"
+                android:text="Upload Image"
+                android:textColor="@android:color/white" />
+        </FrameLayout>
+
+        <!-- Item Title Section -->
+        <EditText
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Item title"
+            android:inputType="text"
+            android:padding="8dp" />
+
+        <!-- Item Description Section -->
+        <EditText
+            android:id="@+id/item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:hint="Item description"
+            android:inputType="text|textLongMessage|textMultiLine"
+            android:minHeight="100dp"
+            android:padding="8dp" />
+
+        <!-- Price Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="$"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/item_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Price"
+                android:inputType="numberDecimal"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Agreement Checkbox -->
+        <CheckBox
+            android:id="@+id/checkbox_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="By checking this box, you agree the information you provided is accurate" />
+
+        <!-- List Item Button -->
+        <Button
+            android:id="@+id/btn_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_500"
+            android:text="List Item"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>
+

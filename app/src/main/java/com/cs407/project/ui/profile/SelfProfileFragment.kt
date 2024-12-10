@@ -1,12 +1,16 @@
 package com.cs407.project.ui.profile
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +23,9 @@ import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileBinding
 import com.cs407.project.ui.listing.ListingFragment
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -30,6 +37,8 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
 
     private lateinit var profileViewModel: ProfileViewModel
     private lateinit var userDB: UsersDatabase
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+    private var selectedImageUri: Uri? = null
 
     override fun onCreateView(
 
@@ -66,6 +75,15 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
                 ?.commit()
         }
 
+        imagePickerLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                if (uri != null) {
+                    handleImageSelection(uri)
+                } else {
+                    Toast.makeText(requireContext(), "Image selection canceled", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         val logoutButton = binding.buttonLogout
         logoutButton.setOnClickListener {
             SharedPreferences(requireContext()).saveLogin(null, null)
@@ -79,15 +97,28 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
             (requireActivity() as MainActivity).replaceProfileFragmentWithEditProfile()
         }
 
+        val profilePic=binding.profilepic
+
+        profilePic.setOnClickListener {
+            openImagePicker()
+            Toast.makeText(requireContext(), "Image clicked!", Toast.LENGTH_SHORT).show()
+        }
+
 
 
 
 
         lifecycleScope.launch {
             val date = userDB.userDao().getDateByUsername(username)
+            val urlString=userDB.userDao().getImageUrlByUsername(username)
             Log.d("date", date.toString())
             binding.username.text = username
             binding.description.text = "Member since " + convertUnixDateToString(date)
+            if (urlString!=null){
+                val uri: Uri = Uri.parse(urlString)
+                binding.profilepic.setImageURI(uri)
+            }
+
         }
 
 
@@ -109,5 +140,39 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
 
         // Return the formatted date string
         return dateFormat.format(date)
+    }
+    private fun openImagePicker() {
+        imagePickerLauncher.launch("image/*")
+    }
+    private fun handleImageSelection(uri: Uri) {
+        selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
+        val sharedPrefs=SharedPreferences(requireContext())
+        val username=sharedPrefs.getLogin().username.toString()
+        lifecycleScope.launch{
+            userDB.userDao().updateImageUrlByUsername(username, selectedImageUri.toString())
+        }
+        Log.d("image", selectedImageUri.toString())
+        if (selectedImageUri != null) {
+            binding.profilepic.setImageURI(selectedImageUri)
+        } else {
+            Toast.makeText(requireContext(), "Failed to save image", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun saveImageLocally(uri: Uri): String? {
+        return try {
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val fileName = "user_image_${System.currentTimeMillis()}.jpg"
+            val file = File(requireContext().filesDir, fileName)
+            val outputStream = FileOutputStream(file)
+
+            inputStream?.copyTo(outputStream)
+            inputStream?.close()
+            outputStream.close()
+
+            file.absolutePath // Return the local file path
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Failed to save image: ${e.message}")
+            null
+        }
     }
 }

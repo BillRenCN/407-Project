@@ -25,10 +25,10 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/profilepic"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:contentDescription="@string/profile_image"
-                tools:src="@tools:sample/avatars" />
+                android:src="@drawable/profile_placeholder"/>
 
             <TextView
                 android:id="@+id/username"

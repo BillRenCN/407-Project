@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
 }
 
 // Second database: Users
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class], version = 2, exportSchema = false)
 abstract class UsersDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 
@@ -44,7 +44,7 @@ abstract class UsersDatabase : RoomDatabase() {
                     context.applicationContext,
                     UsersDatabase::class.java,
                     "users_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }
@@ -67,7 +67,7 @@ abstract class MessagesDatabase : RoomDatabase() {
                     context.applicationContext,
                     MessagesDatabase::class.java,
                     "messages_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

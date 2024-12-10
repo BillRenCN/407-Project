@@ -17,7 +17,8 @@ data class User(
     val sales: Int,
     val rating: Double,
     val date: Long,
-    val description: String
+    val description: String,
+    val imageUrl: String? = null
 )
 
 @Dao
@@ -62,4 +63,15 @@ interface UserDao {
     @Query("UPDATE users SET username = :newUsername WHERE username = :currentUsername")
     suspend fun updateUsername(currentUsername: String, newUsername: String): Int
 
+    @Query("SELECT imageUrl FROM users WHERE username = :username LIMIT 1")
+    suspend fun getImageUrlByUsername(username: String): String?
+
+    @Query("SELECT imageUrl FROM users WHERE userId = :userId LIMIT 1")
+    suspend fun getImageUrlByUserId(userId: Int): String?
+
+    @Query("UPDATE users SET imageUrl = :newImageUrl WHERE username = :username")
+    suspend fun updateImageUrlByUsername(username: String, newImageUrl: String): Int
+
+    @Query("UPDATE users SET imageUrl = :newImageUrl WHERE userId = :userId")
+    suspend fun updateImageUrlByUserId(userId: Int, newImageUrl: String): Int
 }

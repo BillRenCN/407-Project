@@ -25,7 +25,6 @@ import com.cs407.project.ui.listing.ListingFragment
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -67,7 +66,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(
                     R.id.list,
-                    ListingFragment::class.java,
+                    ListingFragment2::class.java,
                     null
                 )  // Pass the fragment instance here
                 ?.setReorderingAllowed(true)
@@ -103,11 +102,6 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
             openImagePicker()
             Toast.makeText(requireContext(), "Image clicked!", Toast.LENGTH_SHORT).show()
         }
-
-
-
-
-
         lifecycleScope.launch {
             val date = userDB.userDao().getDateByUsername(username)
             val urlString=userDB.userDao().getImageUrlByUsername(username)
@@ -118,10 +112,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
                 val uri: Uri = Uri.parse(urlString)
                 binding.profilepic.setImageURI(uri)
             }
-
         }
-
-
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
         return root
@@ -144,6 +135,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
     private fun openImagePicker() {
         imagePickerLauncher.launch("image/*")
     }
+
     private fun handleImageSelection(uri: Uri) {
         selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
         val sharedPrefs=SharedPreferences(requireContext())
@@ -158,6 +150,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
             Toast.makeText(requireContext(), "Failed to save image", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun saveImageLocally(uri: Uri): String? {
         return try {
             val inputStream = requireContext().contentResolver.openInputStream(uri)

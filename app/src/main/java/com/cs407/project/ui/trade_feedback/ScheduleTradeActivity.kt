@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.cs407.project.R
+import com.cs407.project.data.AppDatabase
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -41,10 +42,16 @@ class ScheduleTradeActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_schedule_trade)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
+        val db = ReviewDatabase.getDatabase(this)
+        val reviewDao = db.reviewDao()
+        val appDatabase = AppDatabase.getDatabase(this)
+        val usersDatabase = UsersDatabase.getDatabase(this)
+        val itemDao = appDatabase.itemDao()
+        val userDao = usersDatabase.userDao()
 
         locationEditText = findViewById(R.id.editTextText2)
         dateEditText = findViewById(R.id.editTextText)
-        testDatabase()
+        //testDatabase()
 
         dateEditText.setOnClickListener {
             showDateTimePicker()
@@ -79,10 +86,23 @@ class ScheduleTradeActivity : AppCompatActivity() {
                 if (isLocationConfirmed) {
                     val intent = intent
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
-                    val userId = intent.getIntExtra("USER_ID", -1)
-                    //val reviewDao = reviewDB.reviewDao()
-                    //val sellerID = ItemDao.
-                    //reviewDao.insertReview(com.cs407.project.data.Review())
+                    val buyerId = intent.getIntExtra("USER_ID", -1)
+
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        // Insert hardcoded data
+                        val user = userDao.getById(buyerId)
+                        val sellerId = itemDao.getItemById(itemId)!!.userId
+                        val seller = userDao.getById(sellerId)
+                        val review = Review(
+                            user = user.username,
+                            reviewer = seller.username,
+                            date = dateEditText.text.toString(),
+                            message = "Empty",
+                            iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
+                        )
+                        reviewDao.insertReview(review)
+                    }
                     Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()
@@ -100,7 +120,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
             val review = Review(
                 user = "Alice",
                 reviewer = "Bob",
-                date = "2024-12-10",
+                date = dateEditText.text.toString(),
                 message = "Great product and service!",
                 iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
             )

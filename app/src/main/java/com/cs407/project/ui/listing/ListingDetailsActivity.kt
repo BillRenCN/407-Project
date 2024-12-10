@@ -1,7 +1,6 @@
 package com.cs407.project.ui.listing
 
 import android.content.Context
-import android.net.Uri
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -78,7 +77,6 @@ class ListingDetailsActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-
     private fun loadItemDetails(itemId: Int, context: Context) {
         lifecycleScope.launch {
             val item = database.itemDao().getItemById(itemId)
@@ -122,23 +120,11 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
 
             // Display seller image
-            displayImage(user.userId, binding.sellerImage, "user")
+            displayImage(binding.sellerImage, user.imageUrl)
 
             // Display item image
-            try {
-                if (!item.imageUrl.isNullOrEmpty()) {
-                    // Safely handle both app-local and content URIs
-                    val uri = Uri.parse(item.imageUrl)
-                    binding.itemImage.setImageURI(uri)
-                } else {
-                    // Fallback to displayImage function or placeholder
-                    displayImage(item.id, binding.itemImage, "listing")
-                }
-            } catch (e: SecurityException) {
-                Log.e("ListingDetailsActivity", "Failed to load image: ${e.message}")
-                // Handle gracefully, e.g., show a placeholder image
-                displayImage(item.id, binding.itemImage, "listing")
-            }
+            displayImage(binding.itemImage, item.imageUrl)
         }
     }
+
 }

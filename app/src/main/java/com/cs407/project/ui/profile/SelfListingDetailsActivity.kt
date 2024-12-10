@@ -117,7 +117,7 @@ class SelfListingDetailsActivity : AppCompatActivity() {
                 append("/5")
             }
 
-            displayImage(item.id, binding.itemImage, "listing")
+            displayImage(binding.itemImage, item.imageUrl)
         }
 
     }

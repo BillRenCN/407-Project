@@ -24,4 +24,7 @@ interface ReviewDao {
 
     @Delete
     suspend fun deleteReview(review: Review)
+
+    @Query("SELECT * FROM Review WHERE user = :user")
+    suspend fun getReviewsByUser(user: String): List<Review>
 }

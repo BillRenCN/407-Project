@@ -78,7 +78,6 @@ class ListingDetailsActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-
     private fun loadItemDetails(itemId: Int, context: Context) {
         lifecycleScope.launch {
             val item = database.itemDao().getItemById(itemId)
@@ -122,23 +121,33 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
 
             // Display seller image
-            displayImage(user.userId, binding.sellerImage, "user")
+            try {
+                if (!user.imageUrl.isNullOrEmpty()) {
+                    val sellerUri = Uri.parse(user.imageUrl)
+                    binding.sellerImage.setImageURI(sellerUri) // Load seller image from URI
+                } else {
+                    // Fallback to default placeholder
+                    binding.sellerImage.setImageResource(R.drawable.ic_profile_placeholder)
+                }
+            } catch (e: Exception) {
+                Log.e("ListingDetailsActivity", "Failed to load seller image: ${e.message}")
+                binding.sellerImage.setImageResource(R.drawable.ic_profile_placeholder)
+            }
 
             // Display item image
             try {
                 if (!item.imageUrl.isNullOrEmpty()) {
-                    // Safely handle both app-local and content URIs
-                    val uri = Uri.parse(item.imageUrl)
-                    binding.itemImage.setImageURI(uri)
+                    val itemUri = Uri.parse(item.imageUrl)
+                    binding.itemImage.setImageURI(itemUri)
                 } else {
                     // Fallback to displayImage function or placeholder
                     displayImage(item.id, binding.itemImage, "listing")
                 }
             } catch (e: SecurityException) {
-                Log.e("ListingDetailsActivity", "Failed to load image: ${e.message}")
-                // Handle gracefully, e.g., show a placeholder image
+                Log.e("ListingDetailsActivity", "Failed to load item image: ${e.message}")
                 displayImage(item.id, binding.itemImage, "listing")
             }
         }
     }
+
 }

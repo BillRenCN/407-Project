@@ -29,6 +29,9 @@ class MessageListFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: MessageListAdapter
 
+    val conversations: MutableList<Message> = mutableListOf<Message>()
+    var myUserId: Int = 0
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -36,11 +39,10 @@ class MessageListFragment : Fragment() {
         userDB = UsersDatabase.getDatabase(requireContext())
         messagesDB = MessagesDatabase.getDatabase(requireContext())
 
-        val conversations = mutableListOf<Message>()
 
         val sharedPreferences = SharedPreferences(requireContext())
         val username = sharedPreferences.getLogin().username!!
-        val myUserId = runBlocking {
+        myUserId = runBlocking {
             userDB.userDao().getUserFromUsername(username)!!.userId
         }
 
@@ -55,44 +57,50 @@ class MessageListFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.messageListRecycler.adapter = adapter
 
-        suspend fun refetchMessages() {
-            val allMessages = messagesDB.messagesDao().getConversationsForUser(myUserId)
-
-            for (message in allMessages) {
-                val otherUserId =
-                    if (message.senderId == myUserId) message.receiverId else message.senderId
-
-                val existingConversation = conversations.find { it.senderId == otherUserId || it.receiverId == otherUserId }
-
-                if (existingConversation == null) {
-                    conversations.add(message)
-                    adapter.notifyItemInserted(conversations.size - 1)
-                } else {
-                    if (message.timestamp > existingConversation.timestamp) {
-                        conversations[conversations.indexOf(existingConversation)] = message
-                        adapter.notifyItemChanged(conversations.size - 1)
-                    }
-                }
-            }
-
-            binding.messageListWarning.visibility = if (conversations.isEmpty()) View.VISIBLE else View.GONE
-            adapter.notifyDataSetChanged()
-        }
-
         binding.swipeRefreshLayout.setOnRefreshListener {
             binding.swipeRefreshLayout.isRefreshing = false
-            val dispatcher = Dispatchers.IO
-            CoroutineScope(dispatcher).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 refetchMessages()
             }
         }
 
-        lifecycleScope.launch {
-            refetchMessages()
-        }
-
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         return root
+    }
+
+    suspend fun refetchMessages() {
+        val allMessages = messagesDB.messagesDao().getConversationsForUser(myUserId)
+
+        for (message in allMessages) {
+            val otherUserId =
+                if (message.senderId == myUserId) message.receiverId else message.senderId
+
+            val existingConversation = conversations.find { it.senderId == otherUserId || it.receiverId == otherUserId }
+
+            if (existingConversation == null) {
+                conversations.add(message)
+                CoroutineScope(Dispatchers.Main).launch {
+                    adapter.notifyItemInserted(conversations.size - 1)
+                }
+            } else {
+                if (message.timestamp > existingConversation.timestamp) {
+                    conversations[conversations.indexOf(existingConversation)] = message
+                    CoroutineScope(Dispatchers.Main).launch {
+                        adapter.notifyItemChanged(conversations.size - 1)
+                    }
+                }
+            }
+        }
+
+        binding.messageListWarning.visibility = if (conversations.isEmpty()) View.VISIBLE else View.GONE
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MessageListFragment", "onResume")
+        CoroutineScope(Dispatchers.IO).launch {
+            refetchMessages()
+        }
     }
 
     override fun onDestroyView() {

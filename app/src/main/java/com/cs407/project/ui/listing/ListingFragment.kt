@@ -51,8 +51,10 @@ class ListingFragment : Fragment() {
             resultHandler.launch(intent)
         }
 
-        binding.listingRecycler.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        layoutManager.reverseLayout = true
+        layoutManager.stackFromEnd = true
+        binding.listingRecycler.layoutManager = layoutManager
         binding.listingRecycler.adapter = adapter
 
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->

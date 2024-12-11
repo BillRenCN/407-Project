@@ -7,11 +7,6 @@
         android:title="@string/title_listing" />
 
     <item
-        android:id="@+id/navigation_posts"
-        android:icon="@drawable/baseline_share_24"
-        android:title="@string/title_posts" />
-
-    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/baseline_person_24"
         android:title="@string/title_profile" />

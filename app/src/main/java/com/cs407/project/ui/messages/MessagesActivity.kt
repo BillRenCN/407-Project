@@ -34,8 +34,9 @@ class MessagesActivity : AppCompatActivity() {
         val otherUsername = intent.getStringExtra("USER_NAME")
         var messages: MutableList<Message> = mutableListOf()
 
-        binding.messagesRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        layoutManager.stackFromEnd = true
+        binding.messagesRecycler.layoutManager = layoutManager
         binding.messagesRecycler.adapter = MessagesAdapter(messages, myUserId)
 
         lifecycleScope.launch {

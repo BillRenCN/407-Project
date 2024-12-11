@@ -38,7 +38,11 @@ class MessageListAdapter(
 
         val userDB = UsersDatabase.getDatabase(holder.itemView.context)
 
-        holder.messageText.text = model.message
+        if (model.message.length > 175) {
+            holder.messageText.text = model.message.substring(0, 175) + "..."
+        } else {
+            holder.messageText.text = model.message
+        }
         runBlocking {
             holder.username.text = userDB.userDao().getById(otherPerson).username
         }

@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_listing" />
 
     <fragment
-        android:id="@+id/navigation_posts"
-        android:name="com.cs407.project.ui.posts.PostsFragment"
-        android:label="@string/title_posts"
-        tools:layout="@layout/fragment_posts" />
-
-    <fragment
         android:id="@+id/navigation_profile"
         android:name="com.cs407.project.ui.profile.SelfProfileFragment"
         android:label="@string/title_profile"

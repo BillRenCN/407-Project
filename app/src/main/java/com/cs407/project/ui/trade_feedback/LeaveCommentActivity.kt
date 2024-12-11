@@ -82,8 +82,8 @@ class LeaveCommentActivity : AppCompatActivity() {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDate = currentDateTime.format(formatter)
                     val review = com.cs407.project.data.Review(
-                        user = user.username,
-                        reviewer = seller.username,
+                        user = seller.username,
+                        reviewer = user.username,
                         date = formattedDate, // Use the formatted date here
                         message = reviewText,
                         iconResource = R.mipmap.ic_launcher // Replace with an actual drawable

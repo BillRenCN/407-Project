@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
-                android:text="RandomBlock2"
+                android:text="Loading"
                 android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:text="Member since 5/29/1453"
+            android:text="Loading info"
             android:textSize="15sp" />
 
         <Button
@@ -60,7 +60,7 @@
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="96% positive feedback (23)"
+            android:text="Loading feedback"
             android:textSize="15sp" />
 
         <LinearLayout

@@ -13,8 +13,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
-        android:paddingBottom="60dp"
-        android:paddingTop="100dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:scrollbars="vertical" />
 
     <!-- 消息输入栏 -->

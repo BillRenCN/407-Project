@@ -110,6 +110,8 @@ class ScheduleTradeActivity : AppCompatActivity() {
                 }
             }
         }
+
+        supportActionBar?.hide()
     }
 
     private fun showDateTimePicker() {

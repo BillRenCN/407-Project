@@ -1,62 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.messages.MessagesActivity">
 
+    <!-- RecyclerView 占据剩余空间 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="60dp"
+        android:paddingTop="100dp"
+        android:scrollbars="vertical" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-
+    <!-- 消息输入栏 -->
     <LinearLayout
         android:id="@+id/messageBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurfaceDim"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="?attr/colorSurfaceDim">
 
+        <!-- 输入框 -->
         <EditText
             android:id="@+id/messageEditText"
-            style="@style/Widget.Material3.TextInputEditText.FilledBox"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:breakStrategy="simple"
-            android:ems="10"
-            android:gravity="start|top"
+            android:layout_weight="1"
             android:hint="Send a message..."
+            android:inputType="textMultiLine"
+            android:gravity="start|center_vertical"
+            android:minHeight="48dp"
+            android:padding="8dp"
             android:imeOptions="actionSend"
-            android:importantForAutofill="no"
-            android:inputType="text|textLongMessage|textAutoCorrect|textMultiLine"
             android:textColorHint="?android:attr/textColorSecondary" />
 
+        <!-- 发送按钮 -->
         <ImageButton
             android:id="@+id/imageButton"
-            style="@style/Widget.AppCompat.ImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
-            android:clickable="true"
             android:contentDescription="Send message"
-            android:cropToPadding="false"
-            android:focusable="true"
             app:srcCompat="@drawable/baseline_send_24"
             app:tint="@color/black" />
-
     </LinearLayout>
-
 </LinearLayout>

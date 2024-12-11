@@ -48,20 +48,9 @@
         android:inputType="textCapSentences|textMultiLine"
         app:layout_constraintTop_toBottomOf="@id/ratingBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnAddImage"
+        app:layout_constraintEnd_toStartOf="@+id/btnPostReview"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp" />
-
-    <ImageButton
-        android:id="@+id/btnAddImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@android:drawable/ic_menu_camera"
-        android:contentDescription="Add an image to your review"
-        app:layout_constraintTop_toTopOf="@id/etWriteReview"
-        app:layout_constraintBottom_toBottomOf="@id/etWriteReview"
-        app:layout_constraintEnd_toStartOf="@+id/btnPostReview"
         android:layout_marginEnd="8dp" />
 
     <Button

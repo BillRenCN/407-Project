@@ -46,6 +46,8 @@
             android:label="@string/title_post_item" />
         <activity android:name=".ui.trade_feedback.LeaveCommentActivity" />
         <activity android:name=".ui.trade_feedback.ScheduleTradeActivity" />
+        <activity android:name=".ui.trade_feedback.AllReviewsActivity" />
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

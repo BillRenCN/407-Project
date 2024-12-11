@@ -20,14 +20,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.cs407.project.data.UsersDatabase
-import java.util.Calendar
-import java.util.Locale
 import com.cs407.project.data.ItemDao
 import com.cs407.project.data.Review
 import com.cs407.project.data.ReviewDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.Locale
 
 class ScheduleTradeActivity : AppCompatActivity() {
     private lateinit var mMap: GoogleMap
@@ -41,6 +41,10 @@ class ScheduleTradeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_schedule_trade)
+
+        // Initialize mDestinationLatLng with a default value
+        mDestinationLatLng = LatLng(43.077321, -89.424316) // Default location
+
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
         val db = ReviewDatabase.getDatabase(this)
         val reviewDao = db.reviewDao()
@@ -51,7 +55,6 @@ class ScheduleTradeActivity : AppCompatActivity() {
 
         locationEditText = findViewById(R.id.editTextText2)
         dateEditText = findViewById(R.id.editTextText)
-        //testDatabase()
 
         dateEditText.setOnClickListener {
             showDateTimePicker()
@@ -60,8 +63,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
         mapFragment?.getMapAsync { googleMap ->
             runOnUiThread {
                 mMap = googleMap
-                mDestinationLatLng = LatLng(43.0753, -89.4034)
-                setLocationMarker(mDestinationLatLng, "Bascom Hall")
+                setLocationMarker(mDestinationLatLng, "Bascom Hall") // Initial marker with default location
             }
         }
 
@@ -88,7 +90,6 @@ class ScheduleTradeActivity : AppCompatActivity() {
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
                     val buyerId = intent.getIntExtra("USER_ID", -1)
 
-
                     CoroutineScope(Dispatchers.IO).launch {
                         // Insert hardcoded data
                         val user = userDao.getById(buyerId)
@@ -101,7 +102,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
                             message = "Empty",
                             iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
                         )
-                        reviewDao.insertReview(review)
+                        //reviewDao.insertReview(review)
                     }
                     Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
                 } else {
@@ -111,31 +112,6 @@ class ScheduleTradeActivity : AppCompatActivity() {
         }
 
         supportActionBar?.hide()
-    }
-
-    private fun testDatabase() {
-        val db = ReviewDatabase.getDatabase(this)
-        val reviewDao = db.reviewDao()
-
-        CoroutineScope(Dispatchers.IO).launch {
-            // Insert hardcoded data
-            val review = Review(
-                user = "Alice",
-                reviewer = "Bob",
-                date = dateEditText.text.toString(),
-                message = "Great product and service!",
-                iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
-            )
-            reviewDao.insertReview(review)
-
-            // Fetch the inserted review
-            val fetchedReview = reviewDao.getReview("Alice", "Bob")
-            println("Fetched Review: $fetchedReview")
-
-            // Fetch all reviews
-            val allReviews = reviewDao.getAllReviews()
-            println("All Reviews: $allReviews")
-        }
     }
 
     private fun showDateTimePicker() {
@@ -161,9 +137,10 @@ class ScheduleTradeActivity : AppCompatActivity() {
                         Log.d("debug", "2")
                         val address = addressList[0]
                         val latLng = LatLng(address.latitude, address.longitude)
-                        Log.d("MainActivity", "Location found: \${address.latitude}, \${address.longitude}")
+                        Log.d("MainActivity", "Location found: ${address.latitude}, ${address.longitude}")
 
-                        setLocationMarker(latLng, "locationName")
+                        setLocationMarker(latLng, locationName)
+                        mDestinationLatLng = latLng // Update the destination latLng here
                         isLocationConfirmed = true
                     } else {
                         Toast.makeText(this@ScheduleTradeActivity, "Location not found", Toast.LENGTH_SHORT).show()
@@ -185,7 +162,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
             val markerOptions = MarkerOptions().position(destination).title(destinationName)
             mMap.addMarker(markerOptions)
 
-            // Move the camera to the marker's location with a zoom of  15x
+            // Move the camera to the marker's location with a zoom of 15x
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15f))
         }
     }

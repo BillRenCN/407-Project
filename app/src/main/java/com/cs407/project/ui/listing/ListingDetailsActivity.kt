@@ -15,6 +15,7 @@ import com.cs407.project.databinding.ActivityItemDetailsBinding
 import com.cs407.project.lib.displayImage
 import com.cs407.project.ui.messages.MessagesActivity
 import com.cs407.project.ui.profile.ProfileActivity
+import com.cs407.project.ui.trade_feedback.AllReviewsActivity
 import com.cs407.project.ui.trade_feedback.LeaveCommentActivity
 import com.cs407.project.ui.trade_feedback.ScheduleTradeActivity
 import kotlinx.coroutines.launch
@@ -47,31 +48,6 @@ class ListingDetailsActivity : AppCompatActivity() {
             val intent = Intent(this, ProfileActivity::class.java)
             intent.putExtra("USER_ID", userId)
             this.startActivity(intent)
-        }
-
-        // Certain actions, like leaving comments or scheduling trades, should be prevented
-        // when the user is the one who posted it.
-        // See message button logic
-        // TODO make sure the posting user can't buy their own things
-        binding.btnLeaveComment.setOnClickListener {
-            Toast.makeText(this, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
-            // You can add the logic for leaving a comment here
-            val intent = Intent(this, LeaveCommentActivity::class.java)
-            intent.putExtra("ITEM_ID", userId)
-            this.startActivity(intent)
-        }
-
-        binding.btnScheduleTrade.setOnClickListener {
-            val intent = Intent(this, ScheduleTradeActivity::class.java)
-            intent.putExtra("ITEM_ID", itemId)
-            intent.putExtra("USER_ID", userId)
-            Toast.makeText(this, "ScheduleTrade clicked", Toast.LENGTH_SHORT).show()
-            this.startActivity(intent)
-        }
-
-        binding.btnViewReviews.setOnClickListener {
-            Toast.makeText(this, "View All Reviews clicked", Toast.LENGTH_SHORT).show()
-            // You can add the logic for viewing reviews here
         }
 
         supportActionBar?.hide()
@@ -115,6 +91,55 @@ class ListingDetailsActivity : AppCompatActivity() {
                     intent.putExtra("USER_ID", userId)
                     intent.putExtra("MY_USER_ID", myUserId)
                     intent.putExtra("USER_NAME", user.username)
+                    context.startActivity(intent)
+                }
+            }
+            binding.btnLeaveComment.setOnClickListener {
+                lifecycleScope.launch {
+                    val myUserId = usersDatabase.userDao()
+                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
+                    Log.d("ListingDetailsActivity", "My User ID: $myUserId")
+                    if (item.userId == myUserId) {
+                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
+                            .show()
+                        return@launch
+                    }
+                    //Toast.makeText(context, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
+                        // You can add the logic for leaving a comment here
+                    val intent = Intent(context, LeaveCommentActivity::class.java)
+                    intent.putExtra("ITEM_ID", userId)
+                    context.startActivity(intent)
+                    }
+            }
+            binding.btnScheduleTrade.setOnClickListener {
+                lifecycleScope.launch {
+                    val myUserId = usersDatabase.userDao()
+                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
+                    Log.d("ListingDetailsActivity", "My User ID: $myUserId")
+                    if (item.userId == myUserId) {
+                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
+                            .show()
+                        return@launch
+                    }
+                    val intent = Intent(context, ScheduleTradeActivity::class.java)
+                    intent.putExtra("ITEM_ID", itemId)
+                    intent.putExtra("USER_ID", userId)
+                    Toast.makeText(context, "ScheduleTrade clicked", Toast.LENGTH_SHORT).show()
+                    context.startActivity(intent)
+                }
+
+            }
+            binding.btnViewReviews.setOnClickListener {
+                lifecycleScope.launch {
+                    val myUserId = usersDatabase.userDao()
+                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
+                    Log.d("ListingDetailsActivity", "My User ID: $myUserId")
+                    if (item.userId == myUserId) {
+                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
+                            .show()
+                        return@launch
+                    }
+                    val intent = Intent(context, AllReviewsActivity::class.java)
                     context.startActivity(intent)
                 }
             }

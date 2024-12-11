@@ -30,7 +30,7 @@ abstract class AppDatabase : RoomDatabase() {
 }
 
 // Second database: Users
-@Database(entities = [User::class], version = 2, exportSchema = false)
+@Database(entities = [User::class], version = 3, exportSchema = false)
 abstract class UsersDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 

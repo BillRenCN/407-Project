@@ -92,7 +92,10 @@ class MessageListFragment : Fragment() {
             }
         }
 
-        binding.messageListWarning.visibility = if (conversations.isEmpty()) View.VISIBLE else View.GONE
+
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.messageListWarning.visibility = if (conversations.isEmpty()) View.VISIBLE else View.GONE
+        }
     }
 
     override fun onResume() {

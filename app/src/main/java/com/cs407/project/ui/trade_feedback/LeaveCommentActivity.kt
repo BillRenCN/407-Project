@@ -2,6 +2,7 @@ package com.cs407.project.ui.trade_feedback
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -17,6 +18,8 @@ import com.cs407.project.Review
 import com.cs407.project.ReviewAdapter
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.ReviewDatabase
+import com.cs407.project.data.SharedPreferences
+import com.cs407.project.data.User
 import com.cs407.project.data.UsersDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +28,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class LeaveCommentActivity : AppCompatActivity() {
-
+    private lateinit var sharedPrefs: SharedPreferences
     private lateinit var adapter: ReviewAdapter
     private val reviewsList = mutableListOf<Review>()
 
@@ -34,7 +37,7 @@ class LeaveCommentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_leave_comment)
-
+        sharedPrefs = SharedPreferences(this)
         // Enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -67,8 +70,12 @@ class LeaveCommentActivity : AppCompatActivity() {
                 val itemId = intent.getIntExtra("ITEM_ID", -1)
                 val buyerId = intent.getIntExtra("USER_ID", -1)
                 // add time save in string
+                var username=""
+                var reviewerName = ""
                 CoroutineScope(Dispatchers.IO).launch {
-                    val user = userDao.getById(buyerId)
+                    val loginInfo = sharedPrefs.getLogin()
+                    val userId = usersDatabase.userDao().getUserFromUsername(loginInfo.username!!)?.userId
+                    val user = userDao.getById(userId!!)
                     val sellerId = itemDao.getItemById(itemId)!!.userId
                     val seller = userDao.getById(sellerId)
                     val currentDateTime = LocalDateTime.now()
@@ -78,17 +85,20 @@ class LeaveCommentActivity : AppCompatActivity() {
                         user = user.username,
                         reviewer = seller.username,
                         date = formattedDate, // Use the formatted date here
-                        message = "test",
-                        iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
+                        message = reviewText,
+                        iconResource = R.mipmap.ic_launcher // Replace with an actual drawable
                     )
                     reviewDao.insertReview(review)
+                    username = user.username
+                    reviewerName = user.username
                 }
+
                 val newReview = Review(
-                    iconResource = 5, // 假设的默认图标
-                    user = "Anonymous", // 假设的默认用户名
-                    date = "Today", // 假设的默认日期
+                    iconResource =  R.mipmap.ic_launcher, // 假设的默认图标
+                    user = username , // 假设的默认用户名
+                    date = getCurrentTime(), // 假设的默认日期
                     message = reviewText,
-                    reviewer = ""
+                    reviewer = reviewerName
                 )
                 reviewsList.add(0, newReview) // Add the new review at the beginning
                 adapter.notifyItemInserted(0)
@@ -101,5 +111,13 @@ class LeaveCommentActivity : AppCompatActivity() {
                 etWriteReview.text.clear()
             }
         }
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getCurrentTime(): String {
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        return currentDateTime.format(formatter)
     }
 }

@@ -1,15 +1,16 @@
-package com.cs407.project
+package com.cs407.project.ui.trade_feedback
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.project.R
+import com.cs407.project.data.Review
 
-class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
+class AllReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<AllReviewAdapter.ReviewViewHolder>() {
 
     // Create the ViewHolder for each review item
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -6,7 +6,7 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Review::class], version = 2, exportSchema = false)
+@Database(entities = [Review::class], version = 3, exportSchema = false)
 abstract class ReviewDatabase : RoomDatabase() {
 
     abstract fun reviewDao(): ReviewDao

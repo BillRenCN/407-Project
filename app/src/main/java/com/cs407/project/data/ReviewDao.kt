@@ -3,8 +3,9 @@ package com.cs407.project.data
 import androidx.room.*
 import androidx.room.Entity
 
-@Entity(primaryKeys = ["user", "reviewer"])
+@Entity
 data class Review(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,  // 自动生成的主键，默认为0
     val user: String,
     val reviewer: String,
     val date: String,

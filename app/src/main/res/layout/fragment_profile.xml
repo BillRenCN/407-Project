@@ -78,15 +78,7 @@
                 android:text="My Listings"
                 android:textColor="@color/cardview_dark_background" />
 
-            <Button
-                android:id="@+id/review_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@android:color/transparent"
-                android:text="Reviews"
-                android:textColor="@color/cardview_dark_background" />
+
         </LinearLayout>
 
         <View

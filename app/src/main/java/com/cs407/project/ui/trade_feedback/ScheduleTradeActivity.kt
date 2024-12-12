@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.data.ItemDao
+import com.cs407.project.data.Message
+import com.cs407.project.data.MessagesDatabase
 import com.cs407.project.data.Review
 import com.cs407.project.data.ReviewDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -46,12 +48,9 @@ class ScheduleTradeActivity : AppCompatActivity() {
         mDestinationLatLng = LatLng(43.077321, -89.424316) // Default location
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment
-        val db = ReviewDatabase.getDatabase(this)
-        val reviewDao = db.reviewDao()
+        val messagesDao = MessagesDatabase.getDatabase(this).messagesDao()
         val appDatabase = AppDatabase.getDatabase(this)
-        val usersDatabase = UsersDatabase.getDatabase(this)
         val itemDao = appDatabase.itemDao()
-        val userDao = usersDatabase.userDao()
 
         locationEditText = findViewById(R.id.editTextText2)
         dateEditText = findViewById(R.id.editTextText)
@@ -90,21 +89,21 @@ class ScheduleTradeActivity : AppCompatActivity() {
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
                     val buyerId = intent.getIntExtra("USER_ID", -1)
 
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        // Insert hardcoded data
-//                        val user = userDao.getById(buyerId)
-//                        val sellerId = itemDao.getItemById(itemId)!!.userId
-//                        val seller = userDao.getById(sellerId)
-//                        val review = Review(
-//                            user = user.username,
-//                            reviewer = seller.username,
-//                            date = dateEditText.text.toString(),
-//                            message = "Empty",
-//                            iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
-//                        )
-//                        //reviewDao.insertReview(review)
-//                    }
-                    Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val sellerId = itemDao.getItemById(itemId)!!.userId
+                        val itemName = itemDao.getItemById(itemId)!!.title
+
+                        val message = Message(
+                            senderId = buyerId,
+                            receiverId = sellerId,
+                            timestamp = System.currentTimeMillis(),
+                            message = "Hi! I'd like to schedule a trade with you for '$itemName' at ${locationEditText.text} on ${dateEditText.text}."
+                        )
+
+                        messagesDao.insertItem(message)
+                    }
+                    Toast.makeText(this, "Trade confirmed, message sent", Toast.LENGTH_LONG).show()
+                    finish()
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()
                 }

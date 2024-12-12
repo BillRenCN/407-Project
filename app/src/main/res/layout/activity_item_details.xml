@@ -16,10 +16,8 @@
             android:id="@+id/item_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/ic_placeholder_image"
-            android:scaleType="centerCrop"
-            android:background="@drawable/image_background_placeholder"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop" />
 
         <!-- Item Information -->
         <TextView
@@ -60,9 +58,9 @@
                 android:id="@+id/seller_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_profile_placeholder"
                 android:layout_marginEnd="8dp"
-                android:contentDescription="Seller Image" />
+                android:contentDescription="Seller Image"
+                android:src="@drawable/profile_placeholder" />
 
             <LinearLayout
                 android:layout_width="0dp"

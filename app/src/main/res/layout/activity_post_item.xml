@@ -14,8 +14,7 @@ android:padding="16dp">
             android:id="@+id/image_upload_section"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/dotted_background">
+            android:layout_marginBottom="16dp">
 
             <ImageView
                 android:id="@+id/preview_image"

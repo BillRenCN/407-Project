@@ -1,4 +1,4 @@
-package com.cs407.project.ui.listing
+package com.cs407.project.ui.profile
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import com.cs407.project.MainActivity
 import com.cs407.project.R
 import com.cs407.project.data.AppDatabase
@@ -16,12 +15,9 @@ import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivitySelfListingDetailsBinding
 import com.cs407.project.lib.displayImage
-import com.cs407.project.ui.profile.ProfileActivity
-import com.cs407.project.ui.trade_feedback.LeaveCommentActivity
-import com.cs407.project.ui.trade_feedback.ScheduleTradeActivity
-import com.cs407.project.ui.listing.SelfListingAdapter
 import com.cs407.project.ui.listing.ListingViewModel
-import com.cs407.project.ui.profile.ListingViewModel2
+import com.cs407.project.ui.listing.SelfListingAdapter
+import com.cs407.project.ui.trade_feedback.AllReviewsActivity
 import kotlinx.coroutines.launch
 
 class SelfListingDetailsActivity : AppCompatActivity() {
@@ -66,8 +62,6 @@ class SelfListingDetailsActivity : AppCompatActivity() {
         // Load item details from the database
         loadItemDetails(itemId, this)
 
-
-
         binding.btnScheduleTrade.setOnClickListener {
             lifecycleScope.launch {
                 // Delete the item from the database
@@ -84,9 +78,13 @@ class SelfListingDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnViewReviews.setOnClickListener {
-            Toast.makeText(this, "View All Reviews clicked", Toast.LENGTH_SHORT).show()
-            // You can add the logic for viewing reviews here
+            val intent = Intent(this@SelfListingDetailsActivity, AllReviewsActivity::class.java)
+            intent.putExtra("ITEM_ID", itemId)
+            intent.putExtra("USER_ID", userId)
+            startActivity(intent)
         }
+
+        supportActionBar?.hide()
     }
 
     private fun loadItemDetails(itemId: Int, context: Context) {
@@ -98,11 +96,7 @@ class SelfListingDetailsActivity : AppCompatActivity() {
                 return@launch
             }
             val user = usersDatabase.userDao().getById(item.userId)
-            if (user == null) {
-                Toast.makeText(context, "Error loading user", Toast.LENGTH_LONG).show()
-                finish()
-                return@launch
-            }
+
             userId = user.userId
             binding.itemImage.setImageResource(R.drawable.ic_placeholder_image) // Placeholder image
             binding.itemName.text = item.title

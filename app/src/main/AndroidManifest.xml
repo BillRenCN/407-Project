@@ -20,7 +20,7 @@
 
         <activity android:name=".ui.messages.MessagesActivity" />
 
-        <activity android:name=".ui.listing.SelfListingDetailsActivity" />
+        <activity android:name=".ui.profile.SelfListingDetailsActivity" />
 
 
         <activity android:name=".ui.profile.ProfileActivity" />

@@ -2,6 +2,8 @@ package com.cs407.project.ui.listing
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -77,11 +79,18 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
             binding.sellerRatingSales.text = getString(R.string.rating_sales, ratingStr, user.sales)
 
+            val myUserId = usersDatabase.userDao()
+                .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
+
+            if (item.userId == myUserId) {
+                binding.messageButton.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.btnLeaveComment.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+                binding.btnScheduleTrade.backgroundTintList = ColorStateList.valueOf(Color.GRAY)
+            }
+
             // Message button logic
             binding.messageButton.setOnClickListener {
                 lifecycleScope.launch {
-                    val myUserId = usersDatabase.userDao()
-                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     if (item.userId == myUserId) {
                         Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG).show()
@@ -96,11 +105,9 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
             binding.btnLeaveComment.setOnClickListener {
                 lifecycleScope.launch {
-                    val myUserId = usersDatabase.userDao()
-                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     if (item.userId == myUserId) {
-                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "You cannot leave a comment on your own item", Toast.LENGTH_LONG)
                             .show()
                         return@launch
                     }
@@ -113,11 +120,9 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
             binding.btnScheduleTrade.setOnClickListener {
                 lifecycleScope.launch {
-                    val myUserId = usersDatabase.userDao()
-                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     if (item.userId == myUserId) {
-                        Toast.makeText(context, "You cannot message yourself", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "You cannot schedule a trade with yourself", Toast.LENGTH_LONG)
                             .show()
                         return@launch
                     }
@@ -131,8 +136,6 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
             binding.btnViewReviews.setOnClickListener {
                 lifecycleScope.launch {
-                    val myUserId = usersDatabase.userDao()
-                        .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     val intent = Intent(context, AllReviewsActivity::class.java)
                     intent.putExtra("ITEM_ID", itemId)
@@ -141,7 +144,9 @@ class ListingDetailsActivity : AppCompatActivity() {
             }
 
             // Display seller image
-            displayImage(binding.sellerImage, user.imageUrl)
+            if (user.imageUrl != null) {
+                displayImage(binding.sellerImage, user.imageUrl)
+            }
 
             // Display item image
             displayImage(binding.itemImage, item.imageUrl)

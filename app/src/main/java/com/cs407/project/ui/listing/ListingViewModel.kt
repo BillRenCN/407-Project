@@ -47,7 +47,7 @@ class ListingViewModel(application: Application) : AndroidViewModel(application)
         _isLoading.postValue(true)
         _searchQuery.value = ""
         viewModelScope.launch {
-            val items = database.itemDao().getAllItems()
+            val items = database.itemDao().getAllItems().sortedByDescending { it.id }
             _allListings.postValue(items)
             _filteredListings.postValue(items)
             _isLoading.postValue(false)

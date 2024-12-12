@@ -38,7 +38,11 @@ class ListingAdapter(
         val model = allItems.value?.get(position)?: return
 
         holder.itemName.text = model.title
-        holder.itemDescription.text = model.description
+        if (model.description.length > 175) {
+            holder.itemDescription.text = model.description.substring(0, 175) + "..."
+        } else {
+            holder.itemDescription.text = model.description
+        }
 
         val priceFormat = NumberFormat.getCurrencyInstance()
         priceFormat.currency = Currency.getInstance("USD")

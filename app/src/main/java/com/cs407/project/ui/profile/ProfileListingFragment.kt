@@ -17,14 +17,14 @@ import com.cs407.project.R
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
-import com.cs407.project.databinding.FragmentListing3Binding
+import com.cs407.project.databinding.FragmentProfileListingBinding
 import com.cs407.project.ui.listing.ListingAdapter
 import com.cs407.project.ui.listing.ListingViewModel
 import kotlinx.coroutines.launch
 
 class ProfileListingFragment : Fragment() {
 
-    private var _binding: FragmentListing3Binding? = null
+    private var _binding: FragmentProfileListingBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var appDB: AppDatabase
@@ -53,7 +53,7 @@ class ProfileListingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Use ViewBinding to inflate the layout
-        _binding = FragmentListing3Binding.inflate(inflater, container, false)
+        _binding = FragmentProfileListingBinding.inflate(inflater, container, false)
         val root: View = binding.root
         val userId=requireActivity().intent.getIntExtra("USER_ID", 0)
         // Initialize the database
@@ -145,6 +145,7 @@ class ProfileListingFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        activity?.finish()
         super.onDestroyView()
         // Nullify the binding when the view is destroyed to avoid memory leaks
         _binding = null

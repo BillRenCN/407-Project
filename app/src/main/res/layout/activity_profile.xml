@@ -97,7 +97,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main"
         app:layout_constraintWidth_percent="0.9"
-        tools:layout="@layout/fragment_review_list" />
+        tools:layout="@layout/fragment_profile_listing" />
 
 
 

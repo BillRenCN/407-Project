@@ -36,52 +36,72 @@ class AddListingActivity : AppCompatActivity() {
         binding = ActivityPostItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.itemPrice.addDecimalLimiter(2)
+        try {
+            binding.itemPrice.addDecimalLimiter(2)
 
-        // Initialize the database
-        database = AppDatabase.getDatabase(this)
-        userDB = UsersDatabase.getDatabase(this)
+            // Initialize the database
+            database = AppDatabase.getDatabase(this)
+            userDB = UsersDatabase.getDatabase(this)
 
-        // Register the ActivityResultLauncher
-        imagePickerLauncher =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                if (uri != null) {
-                    handleImageSelection(uri)
-                } else {
-                    Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+            // Register the ActivityResultLauncher
+            imagePickerLauncher =
+                registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                    if (uri != null) {
+                        handleImageSelection(uri)
+                    } else {
+                        Toast.makeText(this, "Image selection canceled", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            // Set up image upload button
+            binding.btnUploadImage.setOnClickListener {
+                openImagePicker()
+            }
+
+            binding.btnListItem.setOnClickListener {
+                try {
+                    if (binding.checkboxAgree.isChecked) {
+                        addItemToDatabase()
+                    } else {
+                        Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("AddListingActivity", "Error in btnListItem: ${e.message}")
+                    Toast.makeText(this, "Failed to list item", Toast.LENGTH_SHORT).show()
                 }
             }
 
-        // Set up image upload button
-        binding.btnUploadImage.setOnClickListener {
-            openImagePicker()
+            supportActionBar?.hide()
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error in onCreate: ${e.message}")
+            Toast.makeText(this, "Initialization failed", Toast.LENGTH_LONG).show()
         }
-
-        binding.btnListItem.setOnClickListener {
-            if (binding.checkboxAgree.isChecked) {
-                addItemToDatabase()
-            } else {
-                Toast.makeText(this, "Please agree to the terms", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        supportActionBar?.hide()
     }
 
     // Open the image picker using the new API
     private fun openImagePicker() {
-        imagePickerLauncher.launch("image/*")
+        try {
+            imagePickerLauncher.launch("image/*")
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error opening image picker: ${e.message}")
+            Toast.makeText(this, "Failed to open image picker", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Handle the image selection result
     private fun handleImageSelection(uri: Uri) {
-        selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
-        if (selectedImageUri != null) {
-            binding.previewImage.setImageURI(selectedImageUri)
-            binding.previewImage.visibility = View.VISIBLE
-            binding.btnUploadImage.text = "Change Image"
-        } else {
-            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+        try {
+            selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
+            if (selectedImageUri != null) {
+                binding.previewImage.setImageURI(selectedImageUri)
+                binding.previewImage.visibility = View.VISIBLE
+                binding.btnUploadImage.text = "Change Image"
+            } else {
+                Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error handling image selection: ${e.message}")
+            Toast.makeText(this, "Error selecting image", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -104,85 +124,106 @@ class AddListingActivity : AppCompatActivity() {
     }
 
     private fun addItemToDatabase() {
-        val title = binding.itemTitle.text.toString()
-        val description = binding.itemDescription.text.toString()
-        val price = binding.itemPrice.text.toString().toDoubleOrNull() ?: 0.0
-        val imageUrl = selectedImageUri?.toString() // Retrieve selected image URI
+        try {
+            val title = binding.itemTitle.text.toString()
+            val description = binding.itemDescription.text.toString()
+            val price = binding.itemPrice.text.toString().toDoubleOrNull() ?: 0.0
+            val imageUrl = selectedImageUri?.toString() // Retrieve selected image URI
 
-        if (title.isNotEmpty() && description.isNotEmpty()) {
-            val sharedPrefs = SharedPreferences(this)
-            val username = sharedPrefs.getLogin().username.toString()
+            if (title.isNotEmpty() && description.isNotEmpty()) {
+                val sharedPrefs = SharedPreferences(this)
+                val username = sharedPrefs.getLogin().username.toString()
 
-            // Insert the item into the database
-            lifecycleScope.launch {
-                val userId = userDB.userDao().getIdByUsername(username)
-                val newItem = Item(
-                    title = title,
-                    description = description,
-                    price = price,
-                    userId = userId,
-                    imageUrl = imageUrl
-                )
-                database.itemDao().insertItem(newItem)
-                Toast.makeText(
-                    this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT
-                ).show()
-                finish() // Close the activity
+                // Insert the item into the database
+                lifecycleScope.launch {
+                    try {
+                        val userId = userDB.userDao().getIdByUsername(username)
+                        val newItem = Item(
+                            title = title,
+                            description = description,
+                            price = price,
+                            userId = userId,
+                            imageUrl = imageUrl
+                        )
+                        database.itemDao().insertItem(newItem)
+                        Toast.makeText(
+                            this@AddListingActivity, "Item posted successfully", Toast.LENGTH_SHORT
+                        ).show()
+                        finish() // Close the activity
+                    } catch (e: Exception) {
+                        Log.e("AddListingActivity", "Error adding item to database: ${e.message}")
+                        Toast.makeText(
+                            this@AddListingActivity, "Failed to add item to database", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error in addItemToDatabase: ${e.message}")
+            Toast.makeText(this, "Failed to add item", Toast.LENGTH_SHORT).show()
         }
     }
 
     // Decimal Limiter Helper
     fun EditText.addDecimalLimiter(maxLimit: Int = 2) {
-        this.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val str = this@addDecimalLimiter.text!!.toString()
-                if (str.isEmpty()) return
-                val str2 = decimalLimiter(str, maxLimit)
+        try {
+            this.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    val str = this@addDecimalLimiter.text!!.toString()
+                    if (str.isEmpty()) return
+                    val str2 = decimalLimiter(str, maxLimit)
 
-                if (str2 != str) {
-                    this@addDecimalLimiter.setText(str2)
-                    val pos = this@addDecimalLimiter.text!!.length
-                    this@addDecimalLimiter.setSelection(pos)
+                    if (str2 != str) {
+                        this@addDecimalLimiter.setText(str2)
+                        val pos = this@addDecimalLimiter.text!!.length
+                        this@addDecimalLimiter.setSelection(pos)
+                    }
                 }
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error adding decimal limiter: ${e.message}")
+        }
     }
 
     fun EditText.decimalLimiter(string: String, MAX_DECIMAL: Int): String {
-        var str = string
-        if (str[0] == '.') str = "0$str"
-        val max = str.length
+        return try {
+            var str = string
+            if (str[0] == '.') str = "0$str"
+            val max = str.length
 
-        var rFinal = ""
-        var after = false
-        var i = 0
-        var up = 0
-        var decimal = 0
-        var t: Char
+            var rFinal = ""
+            var after = false
+            var i = 0
+            var up = 0
+            var decimal = 0
+            var t: Char
 
-        val decimalCount = str.count { ".".contains(it) }
+            val decimalCount = str.count { ".".contains(it) }
 
-        if (decimalCount > 1) return str.dropLast(1)
+            if (decimalCount > 1) return str.dropLast(1)
 
-        while (i < max) {
-            t = str[i]
-            if (t != '.' && !after) {
-                up++
-            } else if (t == '.') {
-                after = true
-            } else {
-                decimal++
-                if (decimal > MAX_DECIMAL) return rFinal
+            while (i < max) {
+                t = str[i]
+                if (t != '.' && !after) {
+                    up++
+                } else if (t == '.') {
+                    after = true
+                } else {
+                    decimal++
+                    if (decimal > MAX_DECIMAL) return rFinal
+                }
+                rFinal += t
+                i++
             }
-            rFinal += t
-            i++
+            return rFinal
+        } catch (e: Exception) {
+            Log.e("AddListingActivity", "Error in decimal limiter: ${e.message}")
+            ""
         }
-        return rFinal
     }
 }

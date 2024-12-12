@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.messages.MessagesActivity">
+
+    <!-- RecyclerView 占据剩余空间 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messagesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:scrollbars="vertical" />
+
+    <!-- 消息输入栏 -->
+    <LinearLayout
+        android:id="@+id/messageBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="?attr/colorSurfaceDim">
+
+        <!-- 输入框 -->
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Send a message..."
+            android:inputType="textMultiLine"
+            android:gravity="start|center_vertical"
+            android:minHeight="48dp"
+            android:padding="8dp"
+            android:imeOptions="actionSend"
+            android:textColorHint="?android:attr/textColorSecondary" />
+
+        <!-- 发送按钮 -->
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Send message"
+            app:srcCompat="@drawable/baseline_send_24"
+            app:tint="@color/black" />
+    </LinearLayout>
+</LinearLayout>

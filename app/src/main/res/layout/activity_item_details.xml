@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="64dp"> <!-- Added top margin -->
+
+        <!-- Image Carousel Placeholder -->
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_placeholder_image"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_background_placeholder"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Item Information -->
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name of Item"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$0"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description for the Item"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Seller Information Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/seller_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_profile_placeholder"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Seller Image" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/seller_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/seller_rating_sales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating: 4.9    Sales: 45"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_view_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Profile"
+                android:backgroundTint="@color/purple_500"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Action Buttons -->
+        <Button
+            android:id="@+id/messageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Send Message"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_leave_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Leave Comment"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btn_schedule_trade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Schedule Trade"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btn_view_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View All Reviews"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>

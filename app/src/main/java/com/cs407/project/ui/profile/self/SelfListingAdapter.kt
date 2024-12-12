@@ -1,4 +1,4 @@
-package com.cs407.project.ui.listing
+package com.cs407.project.ui.profile.self
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -15,8 +15,6 @@ import com.cs407.project.data.Item
 import com.cs407.project.lib.displayImage
 import java.text.NumberFormat
 import java.util.Currency
-import com.cs407.project.ui.profile.ListingViewModel2
-import com.cs407.project.ui.profile.SelfListingDetailsActivity
 
 @SuppressLint("NotifyDataSetChanged")
 class SelfListingAdapter(

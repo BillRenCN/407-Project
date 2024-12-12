@@ -1,4 +1,4 @@
-package com.cs407.project.ui.profile
+package com.cs407.project.ui.profile.self
 
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +16,7 @@ import com.cs407.project.R
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.lib.hash
+import com.cs407.project.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 
 class EditPasswordFragment : Fragment() {

@@ -1,4 +1,4 @@
-package com.cs407.project.ui.profile
+package com.cs407.project.ui.profile.self
 
 import android.os.Bundle
 import android.view.LayoutInflater

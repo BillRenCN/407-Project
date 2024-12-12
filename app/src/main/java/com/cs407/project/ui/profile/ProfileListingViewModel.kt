@@ -9,7 +9,7 @@ import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Item
 import kotlinx.coroutines.launch
 
-class ListingViewModel2(application: Application) : AndroidViewModel(application) {
+class ProfileListingViewModel(application: Application) : AndroidViewModel(application) {
 
     private val database = AppDatabase.getDatabase(application)
 

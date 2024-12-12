@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
 import com.cs407.project.data.Review
 
-class AllReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<AllReviewAdapter.ReviewViewHolder>() {
+class ReviewListAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<ReviewListAdapter.ReviewViewHolder>() {
 
     // Create the ViewHolder for each review item
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

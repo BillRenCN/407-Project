@@ -1,4 +1,4 @@
-package com.cs407.project.ui.profile
+package com.cs407.project.ui.profile.self
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,8 +16,8 @@ import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivitySelfListingDetailsBinding
 import com.cs407.project.lib.displayImage
 import com.cs407.project.ui.listing.ListingViewModel
-import com.cs407.project.ui.listing.SelfListingAdapter
-import com.cs407.project.ui.trade_feedback.AllReviewsActivity
+import com.cs407.project.ui.profile.ProfileListingViewModel
+import com.cs407.project.ui.trade_feedback.ReviewListActivity
 import kotlinx.coroutines.launch
 
 class SelfListingDetailsActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class SelfListingDetailsActivity : AppCompatActivity() {
     private lateinit var usersDatabase: UsersDatabase
     private var itemId: Int = 0
     private var userId: Int = 0
-    private lateinit var viewModel2: ListingViewModel2
+    private lateinit var viewModel2: ProfileListingViewModel
     private lateinit var viewModel: ListingViewModel
     private lateinit var adapter: SelfListingAdapter
 
@@ -78,7 +78,7 @@ class SelfListingDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnViewReviews.setOnClickListener {
-            val intent = Intent(this@SelfListingDetailsActivity, AllReviewsActivity::class.java)
+            val intent = Intent(this@SelfListingDetailsActivity, ReviewListActivity::class.java)
             intent.putExtra("ITEM_ID", itemId)
             intent.putExtra("USER_ID", userId)
             startActivity(intent)
@@ -106,7 +106,7 @@ class SelfListingDetailsActivity : AppCompatActivity() {
             }
             binding.itemDescription.text = item.description
 
-            val ratingStr = buildString {
+            buildString {
                 append(user.rating)
                 append("/5")
             }

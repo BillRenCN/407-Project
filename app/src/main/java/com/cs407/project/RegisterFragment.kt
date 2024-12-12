@@ -39,7 +39,7 @@ class RegisterFragment : Fragment() {
         loginButton = view.findViewById(R.id.userRegisterButton)
         backButton.setOnClickListener {
             activity?.supportFragmentManager?.beginTransaction()?.replace(
-                R.id.startfragment, StartFragment::class.java, null
+                R.id.startfragment, LoginRegisterFragment::class.java, null
             )
                 ?.setReorderingAllowed(true)?.addToBackStack("loading start fragment")?.commit()
         }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -14,8 +13,6 @@ import com.cs407.project.data.ReviewDatabase
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivityProfileBinding
-import com.cs407.project.lib.displayImage
-import com.cs407.project.ui.listing.ListingFragment
 import com.cs407.project.ui.messages.MessagesActivity
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -42,7 +39,7 @@ class ProfileActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.list,
-                ListingFragment3::class.java,
+                ProfileListingFragment::class.java,
                 null
             )
             .setReorderingAllowed(true)

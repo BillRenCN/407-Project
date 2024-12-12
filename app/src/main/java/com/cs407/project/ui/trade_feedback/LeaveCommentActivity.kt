@@ -2,7 +2,6 @@ package com.cs407.project.ui.trade_feedback
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
@@ -15,12 +14,11 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
-import com.cs407.project.Review
+import com.cs407.project.data.Review
 import com.cs407.project.ReviewAdapter
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.ReviewDatabase
 import com.cs407.project.data.SharedPreferences
-import com.cs407.project.data.User
 import com.cs407.project.data.UsersDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,7 +68,6 @@ class LeaveCommentActivity : AppCompatActivity() {
             if (reviewText.isNotEmpty()) {
                 val intent = intent
                 val itemId = intent.getIntExtra("ITEM_ID", -1)
-                val buyerId = intent.getIntExtra("USER_ID", -1)
                 // add time save in string
                 var username=""
                 var reviewerName = ""
@@ -83,7 +80,7 @@ class LeaveCommentActivity : AppCompatActivity() {
                     val currentDateTime = LocalDateTime.now()
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDate = currentDateTime.format(formatter)
-                    val review = com.cs407.project.data.Review(
+                    val review = Review(
                         user = seller.username,
                         goodsId = itemId,
                         rating = ratingBar.rating,
@@ -95,25 +92,20 @@ class LeaveCommentActivity : AppCompatActivity() {
                     reviewDao.insertReview(review)
                     username = user.username
                     reviewerName = user.username
+
+                    reviewsList.add(0, review) // Add the new review at the beginning
+                    runOnUiThread {
+                        adapter.notifyItemInserted(0)
+                        recyclerView.scrollToPosition(0) // Scroll to the top to show the latest review
+                        // Update review count
+                        tvReviewsCount.text = "${reviewsList.size} Reviews"
+
+                        // Clear the input field
+                        etWriteReview.text.clear()
+                    }
                 }
 
-                val newReview = Review(
-                    iconResource =  R.mipmap.ic_launcher,
-                    rating = ratingBar.rating,// 假设的默认图标
-                    user = username , // 假设的默认用户名
-                    date = getCurrentTime(), // 假设的默认日期
-                    message = reviewText,
-                    reviewer = reviewerName
-                )
-                reviewsList.add(0, newReview) // Add the new review at the beginning
-                adapter.notifyItemInserted(0)
-                recyclerView.scrollToPosition(0) // Scroll to the top to show the latest review
 
-                // Update review count
-                tvReviewsCount.text = "${reviewsList.size} Reviews"
-
-                // Clear the input field
-                etWriteReview.text.clear()
             }
         }
     }

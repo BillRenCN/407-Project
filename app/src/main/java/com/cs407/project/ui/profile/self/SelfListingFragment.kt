@@ -1,4 +1,4 @@
-package com.cs407.project.ui.profile
+package com.cs407.project.ui.profile.self
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import com.cs407.project.R
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -14,29 +15,24 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.cs407.project.R
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
-import com.cs407.project.databinding.FragmentListing3Binding
 import com.cs407.project.databinding.FragmentListingBinding
 import com.cs407.project.ui.listing.AddListingActivity
-import com.cs407.project.ui.listing.ListingAdapter
 import com.cs407.project.ui.listing.ListingViewModel
-import com.cs407.project.ui.listing.SelfListingAdapter
+import com.cs407.project.ui.profile.ProfileListingViewModel
 import kotlinx.coroutines.launch
 
-class ListingFragment3 : Fragment() {
+class SelfListingFragment : Fragment() {
 
-    private var _binding: FragmentListing3Binding? = null
-    private val binding get() = _binding!!
-
+    private var _binding: FragmentListingBinding? = null
     private lateinit var appDB: AppDatabase
     private lateinit var userDB: UsersDatabase
-    private lateinit var viewModel2: ListingViewModel2
+    private val binding get() = _binding!!
+    private lateinit var viewModel2: ProfileListingViewModel
     private lateinit var viewModel: ListingViewModel
-    private lateinit var adapter: ListingAdapter
-
+    private lateinit var adapter: SelfListingAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     val resultHandler =
@@ -56,35 +52,37 @@ class ListingFragment3 : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Use ViewBinding to inflate the layout
-        _binding = FragmentListing3Binding.inflate(inflater, container, false)
-        val root: View = binding.root
-        val userId=requireActivity().intent.getIntExtra("USER_ID", 0)
-        // Initialize the database
         appDB = AppDatabase.getDatabase(requireContext())
         userDB = UsersDatabase.getDatabase(requireContext())
 
-        // Fetch the ViewModel from activityViewModels (shared ViewModel between fragments)
-        val viewModel: ListingViewModel2 by activityViewModels()
+        // Fetch the viewModel from activityViewModels (shared ViewModel between fragments)
+        val viewModel: ProfileListingViewModel by activityViewModels()
         this.viewModel2 = viewModel
 
         val viewModel2: ListingViewModel by activityViewModels()
-        this.viewModel = viewModel2
+        this.viewModel=viewModel2
         viewModel2.refreshListings()
-
         // Get userId from SharedPreferences and pass it to the ViewModel
-
+        val userId = getUserIdFromPrefs()
         viewModel.refreshListings(userId)
 
         // Initialize the adapter with filteredListings
-        this.adapter = ListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
+        this.adapter = SelfListingAdapter(viewModel.filteredListings, viewLifecycleOwner)
+
+        _binding = FragmentListingBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        // New listing button click listener
+        binding.newListingButton.setOnClickListener {
+            val intent = Intent(context, AddListingActivity::class.java)
+            resultHandler.launch(intent)
+            resultHandler2.launch(intent)
+        }
 
         // Set up RecyclerView
         binding.listingRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.listingRecycler.adapter = adapter
-
-
 
         // Observe ViewModel's isLoading to show loading state
         viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
@@ -122,7 +120,6 @@ class ListingFragment3 : Fragment() {
 
         // Hide action bar for this fragment
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-
         return root
     }
 
@@ -150,12 +147,11 @@ class ListingFragment3 : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Nullify the binding when the view is destroyed to avoid memory leaks
         _binding = null
     }
 
     // SearchTextListener for search query handling
-    class SearchTextListener(private val viewModel: ListingViewModel2) : SearchView.OnQueryTextListener {
+    class SearchTextListener(private val viewModel: ProfileListingViewModel) : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             // Set the search query in the ViewModel
             viewModel.setSearchQuery(query ?: "")

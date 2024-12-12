@@ -23,8 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class AllReviewsActivity : AppCompatActivity() {
-    private lateinit var adapter: AllReviewAdapter
+class ReviewListActivity : AppCompatActivity() {
+    private lateinit var adapter: ReviewListAdapter
     private var reviewsList = mutableListOf<Review>()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -55,13 +55,13 @@ class AllReviewsActivity : AppCompatActivity() {
                 }
                 averageScore.rating = allScore / reviewsList.size
             }
-            adapter = AllReviewAdapter(reviewsList)
+            adapter = ReviewListAdapter(reviewsList)
             recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()
         }
 
         CoroutineScope(Dispatchers.IO).launch {
-            val item = AppDatabase.getDatabase(this@AllReviewsActivity).itemDao().getItemById(itemId)!!
+            val item = AppDatabase.getDatabase(this@ReviewListActivity).itemDao().getItemById(itemId)!!
             runOnUiThread {
                 supportActionBar?.title = "Reviews for '${item.title}'"
             }

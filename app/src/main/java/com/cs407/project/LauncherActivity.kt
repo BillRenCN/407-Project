@@ -2,7 +2,6 @@ package com.cs407.project
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -71,7 +70,7 @@ class LauncherActivity : AppCompatActivity() {
 
 
     private fun startLoginActivity() {
-        startActivity(Intent(this@LauncherActivity, LoginRegisterActivity::class.java))
+        startActivity(Intent(this@LauncherActivity, NotLoggedInActivity::class.java))
         finish()
     }
 }

@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +19,7 @@
 
         <activity android:name=".ui.messages.MessagesActivity" />
 
-        <activity android:name=".ui.profile.SelfListingDetailsActivity" />
+        <activity android:name=".ui.profile.self.SelfListingDetailsActivity" />
 
 
         <activity android:name=".ui.profile.ProfileActivity" />
@@ -33,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginRegisterActivity" />
+        <activity android:name=".NotLoggedInActivity" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -46,7 +45,7 @@
             android:label="@string/title_post_item" />
         <activity android:name=".ui.trade_feedback.LeaveCommentActivity" />
         <activity android:name=".ui.trade_feedback.ScheduleTradeActivity" />
-        <activity android:name=".ui.trade_feedback.AllReviewsActivity" />
+        <activity android:name=".ui.trade_feedback.ReviewListActivity" />
 
 
         <meta-data

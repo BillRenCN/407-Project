@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.cs407.project.ui.profile.SelfProfileFragment"
+        android:name="com.cs407.project.ui.profile.self.SelfProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
@@ -25,19 +25,19 @@
 
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.cs407.project.ui.profile.EditProfileFragment"
+        android:name="com.cs407.project.ui.profile.self.EditProfileFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_profile" />
 
     <fragment
         android:id="@+id/editPasswordFragment"
-        android:name="com.cs407.project.ui.profile.EditPasswordFragment"
+        android:name="com.cs407.project.ui.profile.self.EditPasswordFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_password" />
 
     <fragment
         android:id="@+id/editUsernameFragment"
-        android:name="com.cs407.project.ui.profile.EditUsernameFragment"
+        android:name="com.cs407.project.ui.profile.self.EditUsernameFragment"
         android:label="Edit Profile"
         tools:layout="@layout/fragment_edit_username" />
 </navigation>

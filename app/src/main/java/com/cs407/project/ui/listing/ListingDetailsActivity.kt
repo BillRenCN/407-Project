@@ -17,7 +17,7 @@ import com.cs407.project.databinding.ActivityItemDetailsBinding
 import com.cs407.project.lib.displayImage
 import com.cs407.project.ui.messages.MessagesActivity
 import com.cs407.project.ui.profile.ProfileActivity
-import com.cs407.project.ui.trade_feedback.AllReviewsActivity
+import com.cs407.project.ui.trade_feedback.ReviewListActivity
 import com.cs407.project.ui.trade_feedback.LeaveCommentActivity
 import com.cs407.project.ui.trade_feedback.ScheduleTradeActivity
 import kotlinx.coroutines.launch
@@ -138,7 +138,7 @@ class ListingDetailsActivity : AppCompatActivity() {
             binding.btnViewReviews.setOnClickListener {
                 lifecycleScope.launch {
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
-                    val intent = Intent(context, AllReviewsActivity::class.java)
+                    val intent = Intent(context, ReviewListActivity::class.java)
                     intent.putExtra("ITEM_ID", itemId)
                     context.startActivity(intent)
                 }

@@ -1,4 +1,4 @@
-package com.cs407.project.ui.profile
+package com.cs407.project.ui.profile.self
 
 import android.content.Intent
 import android.net.Uri
@@ -23,7 +23,7 @@ import com.cs407.project.data.ReviewDatabase
 import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileBinding
-import com.cs407.project.ui.listing.ListingFragment
+import com.cs407.project.ui.profile.ProfileViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -61,7 +61,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(
                 R.id.list,
-                ListingFragment2::class.java,
+                SelfListingFragment::class.java,
                 null
             )  // Pass the fragment instance here
             ?.setReorderingAllowed(true)
@@ -72,7 +72,7 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
             activity?.supportFragmentManager?.beginTransaction()
                 ?.replace(
                     R.id.list,
-                    ListingFragment2::class.java,
+                    SelfListingFragment::class.java,
                     null
                 )  // Pass the fragment instance here
                 ?.setReorderingAllowed(true)

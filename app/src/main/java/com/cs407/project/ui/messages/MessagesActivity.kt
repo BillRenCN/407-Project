@@ -40,7 +40,7 @@ class MessagesActivity : AppCompatActivity() {
         binding.messagesRecycler.adapter = MessagesAdapter(messages, myUserId)
 
         lifecycleScope.launch {
-            val allMessages = messagesDao.getMessagesByParticipants(otherUserId, myUserId)
+            val allMessages = messagesDao.getMessagesByParticipants(otherUserId, myUserId).sortedBy { it.timestamp }
             messages.addAll(allMessages)
             Log.d("MessagesActivity", "messages: $messages")
             binding.messagesRecycler.adapter?.notifyDataSetChanged()

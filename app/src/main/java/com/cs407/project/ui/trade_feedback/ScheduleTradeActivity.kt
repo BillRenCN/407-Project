@@ -95,11 +95,10 @@ class ScheduleTradeActivity : AppCompatActivity() {
                         val sellerId = itemDao.getItemById(itemId)!!.userId
                         val itemName = itemDao.getItemById(itemId)!!.title
 
-                        val message = Message(
-                            senderId = buyerId,
-                            receiverId = sellerId,
-                            timestamp = System.currentTimeMillis(),
-                            message = "Hi! I'd like to schedule a trade with you for '$itemName' at ${locationEditText.text} on ${dateEditText.text}."
+                        val message = Message(buyerId,
+                            sellerId,
+                            "Hi! I'd like to schedule a trade with you for '$itemName' at ${locationEditText.text} on ${dateEditText.text}.",
+                            System.currentTimeMillis(),
                         )
 
                         messagesDao.insertItem(message)

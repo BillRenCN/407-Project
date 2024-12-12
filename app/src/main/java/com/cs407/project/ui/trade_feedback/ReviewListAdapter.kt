@@ -1,6 +1,5 @@
 package com.cs407.project.ui.trade_feedback
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ class ReviewListAdapter(private val reviews: List<Review>) : RecyclerView.Adapte
     // Bind the data to the view
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
         val review = reviews[position]
-        holder.reviewIcon.setImageResource(review.iconResource )
+        holder.reviewIcon.setImageResource(review.iconResource)
         holder.reviewUser.text = review.user
         holder.reviewDate.text = review.date
         holder.reviewMessage.text = review.message

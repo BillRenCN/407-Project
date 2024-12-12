@@ -2,6 +2,7 @@ package com.cs407.project.ui.trade_feedback
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
@@ -27,7 +28,7 @@ import java.time.format.DateTimeFormatter
 
 class LeaveCommentActivity : AppCompatActivity() {
     private lateinit var sharedPrefs: SharedPreferences
-    private lateinit var adapter: ReviewAdapter
+    private lateinit var adapter: ReviewListAdapter
     private val reviewsList = mutableListOf<Review>()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -57,7 +58,7 @@ class LeaveCommentActivity : AppCompatActivity() {
         //rating
         val ratingBar: RatingBar =  findViewById(R.id.ratingBar)
         // Set up RecyclerView with adapter
-        adapter = ReviewAdapter(reviewsList)
+        adapter = ReviewListAdapter(reviewsList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
@@ -79,6 +80,12 @@ class LeaveCommentActivity : AppCompatActivity() {
                     val currentDateTime = LocalDateTime.now()
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDate = currentDateTime.format(formatter)
+                    val drawable = if (ratingBar.rating >= 3) {
+                        R.drawable.review_positive_icon
+                    } else {
+                        R.drawable.baseline_thumb_down_24
+                    }
+
                     val review = Review(
                         user = seller.username,
                         goodsId = itemId,
@@ -86,7 +93,7 @@ class LeaveCommentActivity : AppCompatActivity() {
                         reviewer = user.username,
                         date = formattedDate, // Use the formatted date here
                         message = reviewText,
-                        iconResource = R.mipmap.ic_launcher // Replace with an actual drawable
+                        iconResource = drawable // Replace with an actual drawable
                     )
                     reviewDao.insertReview(review)
                     username = user.username

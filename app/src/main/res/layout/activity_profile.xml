@@ -28,7 +28,8 @@
                 android:id="@+id/profilepic"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:src="@drawable/profile_placeholder"/>
+                android:src="@drawable/profile_placeholder"
+                android:tint="?android:attr/colorForeground" />
 
             <TextView
                 android:id="@+id/username"
@@ -76,7 +77,7 @@
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
                 android:text="View Listings"
-                android:textColor="@color/cardview_dark_background" />
+                android:textColor="?android:attr/textColorPrimary" />
 
 
         </LinearLayout>

@@ -49,6 +49,6 @@
             android:background="@android:color/transparent"
             android:contentDescription="Send message"
             app:srcCompat="@drawable/baseline_send_24"
-            app:tint="@color/black" />
+            app:tint="?attr/colorOnSurface" />
     </LinearLayout>
 </LinearLayout>

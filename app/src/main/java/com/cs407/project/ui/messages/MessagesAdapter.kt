@@ -1,6 +1,8 @@
 package com.cs407.project.ui.messages
 
+import android.content.res.ColorStateList
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,11 +41,27 @@ class MessagesAdapter(
             constraintSet.setHorizontalBias(R.id.messageTextView, 0f)
         }
         constraintSet.applyTo(holder.messageLayout)
-        holder.messageText.backgroundTintList = if (isMyMessage) {
-            holder.itemView.context.getColorStateList(com.google.android.material.R.color.design_default_color_primary)
+
+        val backgroundAttribute = if (isMyMessage) {
+            com.google.android.material.R.attr.colorPrimary
         } else {
-            holder.itemView.context.getColorStateList(R.color.black)
+            com.google.android.material.R.attr.colorSecondary
         }
+        val backgroundColor = TypedValue().apply {
+            holder.itemView.context.theme.resolveAttribute(backgroundAttribute, this, true)
+        }.data
+
+        holder.messageText.backgroundTintList = ColorStateList.valueOf(backgroundColor)
+
+        val textColorAttribute = if (isMyMessage) {
+            com.google.android.material.R.attr.colorOnPrimary
+        } else {
+            com.google.android.material.R.attr.colorOnSecondary
+        }
+        val textColor = TypedValue().apply {
+            holder.itemView.context.theme.resolveAttribute(textColorAttribute, this, true)
+        }.data
+        holder.messageText.setTextColor(textColor)
 
         holder.itemView.setOnClickListener {
             val dateTime = SimpleDateFormat.getDateTimeInstance().format(model.timestamp)

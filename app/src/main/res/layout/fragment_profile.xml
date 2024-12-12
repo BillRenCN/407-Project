@@ -29,7 +29,7 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:src="@drawable/profile_placeholder"
-                android:tint="?android:attr/colorForeground" />
+                app:tint="?android:attr/colorForeground" />
 
             <TextView
                 android:id="@+id/username"

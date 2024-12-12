@@ -117,12 +117,16 @@ class SelfProfileFragment(private val injectedProfileViewModel: ProfileViewModel
                 binding.rating.text="No Reviews"
             }
             else{
-                val rating=reviews.map { it.iconResource }.average()*20
+                val positiveReviews = reviews.count { it.rating >= 3 }
+                val negativeReviews = reviews.count { it.rating < 3 }
+
+                val rating = (positiveReviews.toFloat() / (positiveReviews + negativeReviews)) * 100
+                val ratingString = String.format("%.1f", rating)
+
+                Log.d("ProfileActivity", "Average Rating: $rating")
                 val count=reviews.size
-                binding.rating.text=rating.toString()+"% positive feedback ("+count.toString()+")"
+                binding.rating.text= "$ratingString% positive feedback ($count)"
             }
-
-
 
             Log.d("date", date.toString())
             binding.username.text = username

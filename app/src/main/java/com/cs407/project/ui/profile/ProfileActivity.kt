@@ -18,6 +18,9 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.compareTo
+import kotlin.text.toFloat
+import kotlin.times
 
 class ProfileActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProfileBinding
@@ -66,11 +69,16 @@ class ProfileActivity : AppCompatActivity() {
             val reviews=reviewDB.reviewDao().getReviewsByUser(user.username)
             if (reviews.isEmpty()){
                 binding.rating.text="No Reviews"
-            }
-            else{
-                val rating = reviews.map { it.rating }.average()
+            } else{
+                val positiveReviews = reviews.count { it.rating >= 3 }
+                val negativeReviews = reviews.count { it.rating < 3 }
+
+                val rating = (positiveReviews.toFloat() / (positiveReviews + negativeReviews)) * 100
+                val ratingString = String.format("%.1f", rating)
+
+                Log.d("ProfileActivity", "Average Rating: $rating")
                 val count=reviews.size
-                binding.rating.text=rating.toString()+"% positive feedback ("+count.toString()+")"
+                binding.rating.text= "$ratingString% positive feedback ($count)"
             }
             binding.myButton.setOnClickListener {
                 lifecycleScope.launch {

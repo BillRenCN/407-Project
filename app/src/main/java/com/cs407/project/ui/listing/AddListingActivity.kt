@@ -91,10 +91,13 @@ class AddListingActivity : AppCompatActivity() {
     // Handle the image selection result
     private fun handleImageSelection(uri: Uri) {
         try {
+            // Preload image logic before saving locally
+            binding.previewImage.setImageURI(uri)
+            binding.previewImage.visibility = View.VISIBLE
+
             selectedImageUri = saveImageLocally(uri)?.let { Uri.fromFile(File(it)) }
             if (selectedImageUri != null) {
                 binding.previewImage.setImageURI(selectedImageUri)
-                binding.previewImage.visibility = View.VISIBLE
                 binding.btnUploadImage.text = "Change Image"
             } else {
                 Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show()

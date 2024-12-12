@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,7 +18,6 @@ import com.cs407.project.data.SharedPreferences
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.FragmentProfileListingBinding
 import com.cs407.project.ui.listing.ListingAdapter
-import com.cs407.project.ui.listing.ListingViewModel
 import kotlinx.coroutines.launch
 
 class ProfileListingFragment : Fragment() {
@@ -30,24 +28,7 @@ class ProfileListingFragment : Fragment() {
     private lateinit var appDB: AppDatabase
     private lateinit var userDB: UsersDatabase
     private lateinit var viewModel2: ProfileListingViewModel
-    private lateinit var viewModel: ListingViewModel
     private lateinit var adapter: ListingAdapter
-
-
-    @SuppressLint("NotifyDataSetChanged")
-    val resultHandler =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            // After a new listing is added, refresh the listings for the user.
-            viewModel2.refreshListings(getUserIdFromPrefs())
-            adapter.notifyDataSetChanged()
-        }
-
-    @SuppressLint("NotifyDataSetChanged")
-    val resultHandler2 =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.refreshListings()
-            adapter.notifyDataSetChanged()
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -63,10 +44,6 @@ class ProfileListingFragment : Fragment() {
         // Fetch the ViewModel from activityViewModels (shared ViewModel between fragments)
         val viewModel: ProfileListingViewModel by activityViewModels()
         this.viewModel2 = viewModel
-
-        val viewModel2: ListingViewModel by activityViewModels()
-        this.viewModel = viewModel2
-        viewModel2.refreshListings()
 
         // Get userId from SharedPreferences and pass it to the ViewModel
 
@@ -142,6 +119,14 @@ class ProfileListingFragment : Fragment() {
         }
 
         return userId
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        // Refresh the listings for the user when the fragment is resumed
+        viewModel2.refreshListings(getUserIdFromPrefs())
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

@@ -97,6 +97,13 @@ class ListingFragment : Fragment() {
         return root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshListings()
+        adapter.notifyDataSetChanged()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

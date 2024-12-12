@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import com.cs407.project.R
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -33,21 +32,6 @@ class SelfListingFragment : Fragment() {
     private lateinit var viewModel2: ProfileListingViewModel
     private lateinit var viewModel: ListingViewModel
     private lateinit var adapter: SelfListingAdapter
-
-    @SuppressLint("NotifyDataSetChanged")
-    val resultHandler =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            // After a new listing is added, refresh the listings for the user.
-            viewModel2.refreshListings(getUserIdFromPrefs())
-            adapter.notifyDataSetChanged()
-        }
-
-    @SuppressLint("NotifyDataSetChanged")
-    val resultHandler2 =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            viewModel.refreshListings()
-            adapter.notifyDataSetChanged()
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -75,8 +59,7 @@ class SelfListingFragment : Fragment() {
         // New listing button click listener
         binding.newListingButton.setOnClickListener {
             val intent = Intent(context, AddListingActivity::class.java)
-            resultHandler.launch(intent)
-            resultHandler2.launch(intent)
+            startActivity(intent)
         }
 
         // Set up RecyclerView
@@ -143,6 +126,14 @@ class SelfListingFragment : Fragment() {
         }
 
         return userId
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        super.onResume()
+        // Refresh the listings for the user when the fragment is resumed
+        viewModel2.refreshListings(getUserIdFromPrefs())
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {

@@ -27,7 +27,7 @@ class LauncherActivity : AppCompatActivity() {
         Toast.makeText(
             this@LauncherActivity,
             "Stored Credentials: Username = ${loginInfo.username}, Password = ${loginInfo.password}",
-            Toast.LENGTH_LONG
+            Toast.LENGTH_SHORT
         ).show()
 
         if (loginInfo.username.isNullOrBlank() || loginInfo.password.isNullOrBlank()) {

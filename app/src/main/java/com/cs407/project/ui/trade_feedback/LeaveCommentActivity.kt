@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
 import com.cs407.project.data.Review
-import com.cs407.project.ReviewAdapter
 import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.ReviewDatabase
 import com.cs407.project.data.SharedPreferences

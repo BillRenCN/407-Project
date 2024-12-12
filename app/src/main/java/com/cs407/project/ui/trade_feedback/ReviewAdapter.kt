@@ -1,4 +1,4 @@
-package com.cs407.project
+package com.cs407.project.ui.trade_feedback
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.cs407.project.R
 import com.cs407.project.data.Review
 
 class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {

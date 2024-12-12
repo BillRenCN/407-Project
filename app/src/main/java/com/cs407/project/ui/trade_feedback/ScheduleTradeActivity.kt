@@ -2,6 +2,7 @@ package com.cs407.project.ui.trade_feedback
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.cs407.project.data.Message
 import com.cs407.project.data.MessagesDatabase
 import com.cs407.project.data.Review
 import com.cs407.project.data.ReviewDatabase
+import com.cs407.project.ui.messages.MessagesActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -87,7 +89,7 @@ class ScheduleTradeActivity : AppCompatActivity() {
                 if (isLocationConfirmed) {
                     val intent = intent
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
-                    val buyerId = intent.getIntExtra("USER_ID", -1)
+                    val buyerId = intent.getIntExtra("MY_USER_ID", -1)
 
                     CoroutineScope(Dispatchers.IO).launch {
                         val sellerId = itemDao.getItemById(itemId)!!.userId
@@ -101,9 +103,20 @@ class ScheduleTradeActivity : AppCompatActivity() {
                         )
 
                         messagesDao.insertItem(message)
+
+                        val seller = UsersDatabase.getDatabase(this@ScheduleTradeActivity).userDao().getById(sellerId)
+
+                        val intent = Intent(this@ScheduleTradeActivity, MessagesActivity::class.java)
+                        intent.putExtra("USER_ID", sellerId)
+                        intent.putExtra("MY_USER_ID", buyerId)
+                        intent.putExtra("USER_NAME", seller.username)
+                        runOnUiThread {
+                            Toast.makeText(this@ScheduleTradeActivity, "Trade confirmed, message sent", Toast.LENGTH_LONG).show()
+                            finish()
+                            startActivity(intent)
+                        }
                     }
-                    Toast.makeText(this, "Trade confirmed, message sent", Toast.LENGTH_LONG).show()
-                    finish()
+
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()
                 }

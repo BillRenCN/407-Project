@@ -71,7 +71,7 @@ class ProfileActivity : AppCompatActivity() {
                 binding.rating.text="No Reviews"
             }
             else{
-                val rating=reviews.map { it.iconResource }.average()*20
+                val rating = reviews.map { it.rating }.average()
                 val count=reviews.size
                 binding.rating.text=rating.toString()+"% positive feedback ("+count.toString()+")"
             }

@@ -35,14 +35,23 @@ class AllReviewsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val itemId = intent.extras!!.getInt("ITEM_ID",0)
+        val averageScore:TextView = findViewById(R.id.tv_average_score)
         var tvReviewsCount:TextView = findViewById(R.id.tvReviewsCount)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val db = ReviewDatabase.getDatabase(this)
         val reviewDao = db.reviewDao()
         lifecycleScope.launch {
-            reviewsList = reviewDao.getAllReviews().toMutableList()
+            reviewsList = reviewDao.getReviewsByGoodsId(itemId).toMutableList()
             tvReviewsCount.text = reviewsList.size.toString()
+            if( reviewsList.size>0){
+                var allScore = 0.0f
+                for (review in reviewsList) {
+                    allScore += review.rating
+                }
+                averageScore.text = "Average Score:${ "%.2f".format(allScore/reviewsList.size)}"
+            }
             adapter = AllReviewAdapter(reviewsList)
             recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()

@@ -90,20 +90,20 @@ class ScheduleTradeActivity : AppCompatActivity() {
                     val itemId = intent.getIntExtra("ITEM_ID", -1)
                     val buyerId = intent.getIntExtra("USER_ID", -1)
 
-                    CoroutineScope(Dispatchers.IO).launch {
-                        // Insert hardcoded data
-                        val user = userDao.getById(buyerId)
-                        val sellerId = itemDao.getItemById(itemId)!!.userId
-                        val seller = userDao.getById(sellerId)
-                        val review = Review(
-                            user = user.username,
-                            reviewer = seller.username,
-                            date = dateEditText.text.toString(),
-                            message = "Empty",
-                            iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
-                        )
-                        //reviewDao.insertReview(review)
-                    }
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        // Insert hardcoded data
+//                        val user = userDao.getById(buyerId)
+//                        val sellerId = itemDao.getItemById(itemId)!!.userId
+//                        val seller = userDao.getById(sellerId)
+//                        val review = Review(
+//                            user = user.username,
+//                            reviewer = seller.username,
+//                            date = dateEditText.text.toString(),
+//                            message = "Empty",
+//                            iconResource = R.drawable.ic_launcher_foreground // Replace with an actual drawable
+//                        )
+//                        //reviewDao.insertReview(review)
+//                    }
                     Toast.makeText(this, "Location successfully confirmed", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Please search and confirm the location first", Toast.LENGTH_SHORT).show()

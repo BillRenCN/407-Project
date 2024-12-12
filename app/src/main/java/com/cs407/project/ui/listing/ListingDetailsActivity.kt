@@ -107,7 +107,7 @@ class ListingDetailsActivity : AppCompatActivity() {
                     //Toast.makeText(context, "Leave a Comment clicked", Toast.LENGTH_SHORT).show()
                         // You can add the logic for leaving a comment here
                     val intent = Intent(context, LeaveCommentActivity::class.java)
-                    intent.putExtra("ITEM_ID", userId)
+                    intent.putExtra("ITEM_ID", itemId)
                     context.startActivity(intent)
                     }
             }
@@ -135,6 +135,7 @@ class ListingDetailsActivity : AppCompatActivity() {
                         .getUserFromUsername(SharedPreferences(this@ListingDetailsActivity).getLogin().username!!)!!.userId
                     Log.d("ListingDetailsActivity", "My User ID: $myUserId")
                     val intent = Intent(context, AllReviewsActivity::class.java)
+                    intent.putExtra("ITEM_ID", itemId)
                     context.startActivity(intent)
                 }
             }

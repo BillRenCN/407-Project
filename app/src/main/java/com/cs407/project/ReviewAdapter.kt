@@ -1,7 +1,5 @@
 package com.cs407.project
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +13,7 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val reviewIcon: ImageView = itemView.findViewById(R.id.review_icon)
         val reviewUser: TextView = itemView.findViewById(R.id.review_user)
+        val reviewRating: TextView = itemView.findViewById(R.id.review_rating)
         val reviewDate: TextView = itemView.findViewById(R.id.review_date)
         val reviewMessage: TextView = itemView.findViewById(R.id.review_message)
     }
@@ -32,6 +31,7 @@ class ReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<Re
         holder.reviewUser.text = review.user
         holder.reviewDate.text = review.date
         holder.reviewMessage.text = review.message
+        holder.reviewRating.text = review.rating.toString()
     }
 
     // Return the size of the dataset

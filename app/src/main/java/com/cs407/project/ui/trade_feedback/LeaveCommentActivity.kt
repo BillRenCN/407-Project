@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -56,7 +57,8 @@ class LeaveCommentActivity : AppCompatActivity() {
         val usersDatabase = UsersDatabase.getDatabase(this)
         val itemDao = appDatabase.itemDao()
         val userDao = usersDatabase.userDao()
-
+        //rating
+        val ratingBar: RatingBar =  findViewById(R.id.ratingBar)
         // Set up RecyclerView with adapter
         adapter = ReviewAdapter(reviewsList)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -83,6 +85,8 @@ class LeaveCommentActivity : AppCompatActivity() {
                     val formattedDate = currentDateTime.format(formatter)
                     val review = com.cs407.project.data.Review(
                         user = seller.username,
+                        goodsId = itemId,
+                        rating = ratingBar.rating,
                         reviewer = user.username,
                         date = formattedDate, // Use the formatted date here
                         message = reviewText,
@@ -94,7 +98,8 @@ class LeaveCommentActivity : AppCompatActivity() {
                 }
 
                 val newReview = Review(
-                    iconResource =  R.mipmap.ic_launcher, // 假设的默认图标
+                    iconResource =  R.mipmap.ic_launcher,
+                    rating = ratingBar.rating,// 假设的默认图标
                     user = username , // 假设的默认用户名
                     date = getCurrentTime(), // 假设的默认日期
                     message = reviewText,

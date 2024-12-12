@@ -7,6 +7,8 @@ import androidx.room.Entity
 data class Review(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,  // 自动生成的主键，默认为0
     val user: String,
+    val goodsId:Int,//商品id
+    val rating:Float,//商品评分
     val reviewer: String,
     val date: String,
     val message: String,
@@ -28,4 +30,8 @@ interface ReviewDao {
 
     @Query("SELECT * FROM Review WHERE user = :user")
     suspend fun getReviewsByUser(user: String): List<Review>
+
+
+    @Query("SELECT * FROM Review WHERE goodsId = :goodsId")
+    suspend fun getReviewsByGoodsId(goodsId: Int): List<Review>
 }

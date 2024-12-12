@@ -1,8 +1,10 @@
 package com.cs407.project.ui.messages
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,8 @@ import com.cs407.project.data.MessagesDatabase
 import com.cs407.project.data.UsersDatabase
 import com.cs407.project.databinding.ActivityMessagesBinding
 import kotlinx.coroutines.launch
+import com.cs407.project.R
+import com.cs407.project.ui.profile.ProfileActivity
 
 class MessagesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMessagesBinding
@@ -79,8 +83,20 @@ class MessagesActivity : AppCompatActivity() {
                 finish()
                 return true
             }
+            R.id.chat_view_profile_btn -> {
+                val otherUserId = intent.getIntExtra("USER_ID", 0)
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("USER_ID", otherUserId)
+                startActivity(intent)
+                return true
+            }
 
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.chatmenu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }

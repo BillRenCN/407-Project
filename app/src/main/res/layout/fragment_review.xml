@@ -47,6 +47,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <RatingBar
+                android:id="@+id/ratingBar2"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:maxHeight="36dp"
+                android:minHeight="36dp"
+                android:numStars="5" />
+
         </LinearLayout>
 
         <TextView
@@ -55,14 +66,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"/>
-
-        <TextView
-            android:id="@+id/review_rating"
-            android:text="0.0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingEnd="15dp"/>
 
     </LinearLayout>
 

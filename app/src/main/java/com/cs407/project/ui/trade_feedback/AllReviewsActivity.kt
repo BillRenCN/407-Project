@@ -2,7 +2,7 @@ package com.cs407.project.ui.trade_feedback
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.widget.RatingBar
 import android.widget.TextView
 
 import androidx.activity.enableEdgeToEdge
@@ -14,8 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
+import com.cs407.project.data.AppDatabase
 import com.cs407.project.data.Review
 import com.cs407.project.data.ReviewDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 import kotlinx.coroutines.launch
 
@@ -28,36 +31,41 @@ class AllReviewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_all_views)
+        setContentView(R.layout.activity_all_reviews)
         // Enable edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val itemId = intent.extras!!.getInt("ITEM_ID",0)
-        val averageScore:TextView = findViewById(R.id.tv_average_score)
-        var tvReviewsCount:TextView = findViewById(R.id.tvReviewsCount)
+        val itemId = intent.extras!!.getInt("ITEM_ID", 0)
+        val averageScore: RatingBar = findViewById(R.id.ratingBar3)
+        var tvReviewsCount: TextView = findViewById(R.id.tvReviewsCount)
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val db = ReviewDatabase.getDatabase(this)
         val reviewDao = db.reviewDao()
         lifecycleScope.launch {
             reviewsList = reviewDao.getReviewsByGoodsId(itemId).toMutableList()
-            tvReviewsCount.text = reviewsList.size.toString()
-            if( reviewsList.size>0){
+            tvReviewsCount.text = reviewsList.size.toString() + " Reviews"
+            if (reviewsList.isNotEmpty()) {
                 var allScore = 0.0f
                 for (review in reviewsList) {
                     allScore += review.rating
                 }
-                averageScore.text = "Average Score:${ "%.2f".format(allScore/reviewsList.size)}"
+                averageScore.rating = allScore / reviewsList.size
             }
             adapter = AllReviewAdapter(reviewsList)
             recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()
         }
 
+        CoroutineScope(Dispatchers.IO).launch {
+            val item = AppDatabase.getDatabase(this@AllReviewsActivity).itemDao().getItemById(itemId)!!
+            runOnUiThread {
+                supportActionBar?.title = "Reviews for '${item.title}'"
+            }
+        }
+
     }
-
-
 }

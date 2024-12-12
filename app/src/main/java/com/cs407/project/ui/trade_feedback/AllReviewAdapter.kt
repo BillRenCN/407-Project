@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cs407.project.R
@@ -16,7 +17,7 @@ class AllReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter
     class ReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val reviewIcon: ImageView = itemView.findViewById(R.id.review_icon)
         val reviewUser: TextView = itemView.findViewById(R.id.review_user)
-        val reviewRating: TextView = itemView.findViewById(R.id.review_rating)
+        val reviewRating: RatingBar = itemView.findViewById(R.id.ratingBar2)
         val reviewDate: TextView = itemView.findViewById(R.id.review_date)
         val reviewMessage: TextView = itemView.findViewById(R.id.review_message)
     }
@@ -34,7 +35,7 @@ class AllReviewAdapter(private val reviews: List<Review>) : RecyclerView.Adapter
         holder.reviewUser.text = review.user
         holder.reviewDate.text = review.date
         holder.reviewMessage.text = review.message
-        holder.reviewRating.text = review.rating.toString()
+        holder.reviewRating.rating = review.rating
     }
 
     // Return the size of the dataset
